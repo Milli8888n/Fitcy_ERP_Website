@@ -1,2 +1,0 @@
-const u=(n,r=!1)=>{const e=n instanceof HTMLElement?n:typeof n=="string"?document.body.querySelector(n):null;return new Promise(t=>{e||t(),e.complete&&e.naturalHeight!==0&&t(),e.onload=t,r&&typeof r=="number"&&setTimeout(t,r)})},f=(n,r=!1)=>{const e=n instanceof HTMLElement?n:typeof n=="string"?document.body.querySelector(n):null;return new Promise(t=>{e||t(),e.readyState>=3&&t(),e.addEventListener("canplay",()=>t(),{once:!0}),r&&typeof r=="number"&&setTimeout(t,r)})};export{u as i,f as v};
-//# sourceMappingURL=ACM0Cpj_.js.map

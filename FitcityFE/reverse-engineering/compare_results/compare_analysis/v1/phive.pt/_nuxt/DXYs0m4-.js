@@ -1,2 +1,0 @@
-import{G as n,d as c,o,e as l,O as s}from"./Bhbjo-UN.js";const i=["data-active"],d={class:"-label-1 -uppercase label"},u={__name:"TagButton",props:{label:{type:String,default:""},clickFn:{type:Function,default:()=>{}},activeState:{type:Boolean,default:!1}},setup(t){return(r,a)=>(o(),c("button",{"data-component":"tag-button",onClick:a[0]||(a[0]=(...e)=>t.clickFn&&t.clickFn(...e)),"data-active":t.activeState},[l("span",d,s(t.label),1)],8,i))}},f=n(u,[["__scopeId","data-v-9dd41a7e"]]);export{f as T};
-//# sourceMappingURL=DXYs0m4-.js.map

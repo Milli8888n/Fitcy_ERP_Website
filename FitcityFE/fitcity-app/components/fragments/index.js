@@ -1,7 +1,0 @@
-export { default as MenuGrid } from './MenuGrid/MenuGrid.vue'
-export { default as ClassCard } from './ClassCard/ClassCard.vue'
-export { default as ClubsCards } from './ClubsCards/ClubsCards.vue'
-export { default as FormCallout } from './FormCallout/FormCallout.vue'
-export { default as LegalNotice } from './LegalNotice/LegalNotice.vue'
-export { default as PhotosSlideshow } from './PhotosSlideshow/PhotosSlideshow.vue'
-export { default as StatisticsTable } from './StatisticsTable/StatisticsTable.vue'
