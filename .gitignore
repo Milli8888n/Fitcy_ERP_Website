@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+
+# Coverage
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test output files
+*.txt
+!README.txt
+
+# Temporary
+tmp/
+temp/
+
+.agent/
+FitcityFE/
+node_modules/
+*.zip
+*.log
+*.txt
+!README.md

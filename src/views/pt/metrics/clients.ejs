@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉ số cơ thể khách hàng - PT Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #ffffff; }
+        .text-primary { color: #ccff00; }
+        .bg-primary { background-color: #ccff00; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body class="p-6">
+    <header class="flex justify-between items-center mb-10">
+        <div>
+            <h1 class="text-3xl font-black italic tracking-tighter uppercase"><span class="text-primary tracking-normal">CẬP NHẬT</span> INBODY</h1>
+            <p class="text-slate-500 text-sm">Chọn khách hàng để cập nhật chỉ số InBody định kỳ.</p>
+        </div>
+        <a href="/pt" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all">
+            <span class="material-symbols-outlined">close</span>
+        </a>
+    </header>
+
+    <% if (success_msg && success_msg.length > 0) { %>
+        <div class="mb-6 p-4 bg-primary/10 border border-primary/20 rounded-xl text-primary text-sm font-bold flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">check_circle</span> <%= success_msg %>
+        </div>
+    <% } %>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% if (clients && clients.length > 0) { %>
+            <% clients.forEach(client => { %>
+                <div class="glass p-6 rounded-2xl flex flex-col items-center text-center group hover:border-primary/30 transition-all">
+                    <img alt="Client Avatar" class="w-20 h-20 rounded-2xl object-cover mb-4" src="<%= client.avatar %>"/>
+                    <h3 class="text-lg font-bold text-white"><%= client.name %></h3>
+                    <p class="text-slate-500 text-xs mb-6 uppercase tracking-widest"><%= client.activePackageName || 'Active Client' %></p>
+                    
+                    <div class="w-full flex justify-between items-center gap-2 pt-6 border-t border-white/5">
+                        <a href="/pt/metrics/add/<%= client._id %>" class="flex-1 py-3 bg-primary text-black text-xs font-black rounded-xl uppercase tracking-tighter hover:scale-[1.02] transition-all">
+                            Cập nhật InBody
+                        </a>
+                        <a href="/pt/metrics/history/<%= client._id %>" class="w-12 h-10 glass flex items-center justify-center rounded-xl hover:bg-white/10">
+                            <span class="material-symbols-outlined text-sm">history</span>
+                        </a>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="col-span-full py-20 glass rounded-3xl flex flex-col items-center justify-center opacity-30 italic">
+                <span class="material-symbols-outlined text-5xl mb-3">person_search</span>
+                <p>Bạn hiện không có khách hàng nào đang tập luyện để cập nhật chỉ số.</p>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>

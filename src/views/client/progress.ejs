@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiến độ tập luyện - FitCity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0d0d0d; color: #ffffff; }
+        .text-primary { color: #ccff00; }
+        .bg-primary { background-color: #ccff00; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .card-glow { box-shadow: 0 0 30px rgba(204, 255, 0, 0.05); }
+    </style>
+</head>
+<body class="p-6 md:p-12 mb-20 overflow-x-hidden">
+    <header class="flex justify-between items-start mb-12">
+        <div>
+            <h1 class="text-4xl font-black italic tracking-tighter uppercase leading-none"><span class="text-primary tracking-normal">KẾT QUẢ</span> TẬP LUYỆN</h1>
+            <p class="text-slate-500 text-sm mt-2">Dữ liệu phân tích thể trạng và tiến độ thay đổi của bạn.</p>
+        </div>
+        <a href="/client" class="w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all">
+            <span class="material-symbols-outlined">close</span>
+        </a>
+    </header>
+
+    <% if (metrics && metrics.length > 0) { %>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- Latest Stats Cards -->
+            <div class="space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass p-6 rounded-3xl card-glow border-l-4 border-l-primary">
+                        <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Cân nặng hiện tại</p>
+                        <h3 class="text-3xl font-black text-white"><%= metrics[metrics.length-1].weight %> <span class="text-sm font-normal text-slate-500">KG</span></h3>
+                    </div>
+                    <div class="glass p-6 rounded-3xl card-glow">
+                        <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Chỉ số BMI</p>
+                        <h3 class="text-3xl font-black text-primary"><%= metrics[metrics.length-1].bmi %></h3>
+                    </div>
+                </div>
+                
+                <div class="glass p-8 rounded-[40px] relative overflow-hidden group">
+                    <h4 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-8 border-b border-white/5 pb-4">Phân tích Body Composition</h4>
+                    <div class="h-64 flex items-center justify-center">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trend Chart -->
+            <div class="glass p-8 rounded-[40px] flex flex-col">
+                <div class="flex justify-between items-start mb-8">
+                    <h4 class="text-sm font-black uppercase tracking-widest text-slate-400 border-b border-white/5 pb-4 w-full">Biểu đồ Cân nặng theo thời gian</h4>
+                </div>
+                <div class="h-80 w-full mt-auto">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Records Table -->
+        <div class="glass rounded-[40px] overflow-hidden">
+            <div class="px-8 py-6 border-b border-white/5 flex justify-between items-center bg-white/2">
+                <h4 class="text-sm font-black uppercase tracking-widest text-slate-400">Lịch sử InBody</h4>
+                <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase tracking-widest">Total <%= metrics.length %> Records</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-[10px] font-black uppercase tracking-widest text-slate-600">
+                            <th class="px-8 py-4">Ngày đo</th>
+                            <th class="px-8 py-4 text-center">Cân nặng</th>
+                            <th class="px-8 py-4 text-center">Cơ bắp</th>
+                            <th class="px-8 py-4 text-center">Body Fat</th>
+                            <th class="px-8 py-4 text-center">Nước</th>
+                            <th class="px-8 py-4 text-center">Protein</th>
+                            <th class="px-8 py-4 text-center">Minerals</th>
+                            <th class="px-8 py-4 text-center">BMI</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        <% metrics.reverse().forEach(record => { %>
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="px-8 py-5 text-sm font-bold text-slate-300">
+                                    <%= new Date(record.date).toLocaleDateString('vi-VN') %>
+                                </td>
+                                <td class="px-8 py-5 text-sm text-white font-black text-center tracking-tight"><%= record.weight %> kg</td>
+                                <td class="px-8 py-5 text-sm text-primary text-center font-bold"><%= record.muscleMass || 'N/A' %> kg</td>
+                                <td class="px-8 py-5 text-sm text-slate-400 text-center"><%= record.bodyFat || 'N/A' %> %</td>
+                                <td class="px-8 py-5 text-sm text-slate-400 text-center"><%= record.water || 0 %> %</td>
+                                <td class="px-8 py-5 text-sm text-slate-400 text-center"><%= record.protein || 0 %> %</td>
+                                <td class="px-8 py-5 text-sm text-slate-400 text-center"><%= record.minerals || 0 %> kg</td>
+                                <td class="px-8 py-5 text-sm font-black text-center <%= record.bmi > 25 ? 'text-orange-500' : 'text-primary' %>"><%= record.bmi %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="py-40 flex flex-col items-center justify-center text-center opacity-40">
+            <span class="material-symbols-outlined text-8xl text-primary/20 mb-6">analytics</span>
+            <h2 class="text-2xl font-black italic">CHƯA CÓ DỮ LIỆU INBODY</h2>
+            <p class="text-slate-500 max-w-sm mt-2 font-medium">Bạn chưa thực hiện đo chỉ số cơ thể lần nào. Hãy yêu cầu PT của bạn cập nhật InBody ngay hôm nay!</p>
+        </div>
+    <% } %>
+
+    <div id="chart-data" 
+         data-metrics='<%- JSON.stringify(metrics) %>'
+         class="hidden"></div>
+
+    <script>
+        const dataElement = document.getElementById('chart-data');
+        const metrics = JSON.parse(dataElement.dataset.metrics);
+
+        if (metrics && metrics.length > 0) {
+            const labels = metrics.map(m => new Date(m.date).toLocaleDateString('vi-VN'));
+            const weights = metrics.map(m => m.weight);
+            const latest = metrics[metrics.length - 1];
+            const start = metrics[0];
+
+            // 1. Line Chart (Weight Trend)
+            const lineCtx = document.getElementById('lineChart').getContext('2d');
+            new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: weights,
+                        borderColor: '#ccff00',
+                        backgroundColor: 'rgba(204, 255, 0, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 4,
+                        pointBackgroundColor: '#ccff00',
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#64748b', font: { family: 'Inter', weight: 'bold', size: 10 } }, grid: { display: false } },
+                        y: { ticks: { color: '#64748b', font: { family: 'Inter', size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            // 2. Radar Chart (Comparison - 6 Axes: Weight, Fat, Muscle, Water, Minerals, Protein)
+            const radarCtx = document.getElementById('radarChart').getContext('2d');
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Weight (kg)', 'Fat (%)', 'Muscle (%)', 'Water (%)', 'Minerals (kg)', 'Protein (%)'],
+                    datasets: [
+                        {
+                            label: 'Initial',
+                            data: [
+                                start.weight, 
+                                start.bodyFat || 0, 
+                                (start.muscleMass / start.weight * 100).toFixed(1) || 0, 
+                                start.water || 0, 
+                                start.minerals || 0, 
+                                start.protein || 0
+                            ],
+                            borderColor: '#64748b',
+                            backgroundColor: 'rgba(100, 116, 139, 0.2)',
+                            borderWidth: 1,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'LATEST',
+                            data: [
+                                latest.weight, 
+                                latest.bodyFat || 0, 
+                                (latest.muscleMass / latest.weight * 100).toFixed(1) || 0, 
+                                latest.water || 0, 
+                                latest.minerals || 0, 
+                                latest.protein || 0
+                            ],
+                            borderColor: '#ccff00',
+                            backgroundColor: 'rgba(204, 255, 0, 0.4)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#ccff00'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { backgroundColor: '#1e293b', titleFont: { family: 'Inter', weight: 'black' } }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255,255,255,0.05)' },
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            pointLabels: { 
+                                color: '#94a3b8', 
+                                font: { family: 'Inter', weight: 'black', size: 10 } 
+                            },
+                            ticks: { display: false },
+                            suggestedMin: 0
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-lg z-50">
+        <div class="bg-slate-900/90 backdrop-blur-xl border border-white/5 rounded-full px-4 py-3 grid grid-cols-5 items-center shadow-2xl">
+            <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-primary transition-all" href="/client">
+                <span class="material-symbols-outlined text-[24px]">home</span>
+                <span class="text-[8px] font-black uppercase tracking-tighter leading-none">Home</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-primary transition-all" href="/client/workouts">
+                <span class="material-symbols-outlined text-[24px]">fitness_center</span>
+                <span class="text-[8px] font-black uppercase tracking-tighter leading-none">Train</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-primary transition-all" href="/client/nutrition">
+                <span class="material-symbols-outlined text-[24px]">restaurant</span>
+                <span class="text-[8px] font-black uppercase tracking-tighter leading-none">Food</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 text-primary" href="/client/progress">
+                <span class="material-symbols-outlined text-[24px] fill-[1]">monitoring</span>
+                <span class="text-[8px] font-black uppercase tracking-tighter leading-none">Stats</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-red-500 transition-all border-l border-white/5 pl-2" href="/auth/logout" onclick="return confirm('Bạn muốn thoát?');">
+                <span class="material-symbols-outlined text-[24px]">logout</span>
+                <span class="text-[8px] font-black uppercase tracking-tighter leading-none">Exit</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>

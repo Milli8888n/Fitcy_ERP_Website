@@ -1,0 +1,37 @@
+﻿{
+    "metaTags":  {
+                     "seo":  4,
+                     "openGraph":  8,
+                     "twitter":  4,
+                     "other":  5
+                 },
+    "timestamp":  "2026-02-05 18:27:08",
+    "dataAttributes":  {
+                           "scroll":  0,
+                           "components":  38,
+                           "animation":  0
+                       },
+    "css":  {
+                "animations":  1,
+                "externalSheets":  6,
+                "inlineBlocks":  58,
+                "variables":  83,
+                "mediaQueries":  14
+            },
+    "resources":  {
+                      "images":  {
+                                     "background":  0,
+                                     "srcset":  49,
+                                     "standard":  48,
+                                     "dataUri":  0
+                                 },
+                      "iframes":  0,
+                      "fonts":  2,
+                      "videos":  0,
+                      "scripts":  {
+                                      "external":  1,
+                                      "modules":  1,
+                                      "inline":  1
+                                  }
+                  }
+}

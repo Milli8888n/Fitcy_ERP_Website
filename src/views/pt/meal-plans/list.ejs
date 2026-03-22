@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Thực đơn - FitCity PT</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ccff00",
+                        "background-dark": "#121212",
+                        "dark-card": "#1e1e1e",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-dark text-slate-100 min-h-screen pb-32">
+    <header class="p-8 pb-4 flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-extrabold text-white tracking-tight">Kế hoạch Dinh dưỡng</h1>
+            <p class="text-slate-500 text-sm mt-1">Quản lý phác đồ ăn uống cho các hội viên của bạn.</p>
+        </div>
+        <a href="/pt/meal-plans/create" class="size-12 bg-primary rounded-2xl flex items-center justify-center text-background-dark shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+            <span class="material-symbols-outlined font-bold">add</span>
+        </a>
+    </header>
+
+    <main class="px-8 space-y-6">
+        <% if (success_msg && success_msg.length > 0) { %>
+            <div class="bg-primary/10 border border-primary/20 text-primary px-6 py-4 rounded-2xl flex items-center gap-3">
+                <span class="material-symbols-outlined">check_circle</span>
+                <span class="text-sm font-bold uppercase tracking-wider"><%= success_msg %></span>
+            </div>
+        <% } %>
+
+        <div class="grid grid-cols-1 gap-4">
+            <% mealPlans.forEach(plan => { %>
+                <div class="bg-dark-card border border-white/5 p-6 rounded-3xl group hover:border-primary/30 transition-all">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="<%= plan.client.avatar || '/images/default-avatar.png' %>" class="w-14 h-14 rounded-2xl object-cover border-2 border-white/10">
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg text-white"><%= plan.client.name %></h3>
+                            <div class="flex gap-2 mt-1">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-primary text-background-dark uppercase">
+                                    <%= plan.goal %>
+                                </span>
+                            </div>
+                        </div>
+                            <p class="text-2xl font-black text-primary"><%= plan.dailyCalories %></p>
+                            <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Kcal / Ngày</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 mb-6">
+                        <div class="bg-background-dark/50 p-3 rounded-2xl border border-white/5">
+                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Đạm</p>
+                            <div class="flex items-end gap-1">
+                                <span class="text-lg font-bold text-white"><%= plan.macros.protein %></span><span class="text-xs text-slate-600 mb-1">%</span>
+                            </div>
+                        </div>
+                        <div class="bg-background-dark/50 p-3 rounded-2xl border border-white/5">
+                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">T.Bột</p>
+                            <div class="flex items-end gap-1">
+                                <span class="text-lg font-bold text-white"><%= plan.macros.carbs %></span><span class="text-xs text-slate-600 mb-1">%</span>
+                            </div>
+                        </div>
+                        <div class="bg-background-dark/50 p-3 rounded-2xl border border-white/5">
+                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Béo</p>
+                            <div class="flex items-end gap-1">
+                                <span class="text-lg font-bold text-white"><%= plan.macros.fat %></span><span class="text-xs text-slate-600 mb-1">%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center bg-white/5 p-4 rounded-2xl">
+                        <div class="flex items-center gap-2 text-slate-500">
+                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">
+                                Có hiệu lực đến: <%= new Date(plan.endDate).toLocaleDateString('vi-VN') %>
+                            </span>
+                        </div>
+                        <button class="text-[10px] font-black text-primary uppercase tracking-tighter hover:underline">
+                            Chi tiết & Lịch trình
+                        </button>
+                    </div>
+                </div>
+            <% }) %>
+
+            <% if (mealPlans.length === 0) { %>
+                <div class="py-20 text-center bg-dark-card/30 rounded-3xl border border-dashed border-white/10">
+                    <span class="material-symbols-outlined text-4xl text-slate-700 mb-3">restaurant</span>
+                    <p class="text-slate-500 text-sm italic tracking-tight">Chưa có phác đồ dinh dưỡng nào cho hội viên của bạn.</p>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('../../partials/nav_pt', { activePage: 'meal-plans' }) %>
+</body>
+</html>

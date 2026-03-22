@@ -1,0 +1,209 @@
+<%- include('../partials/header', { title: 'Bảng điều khiển', activePage: 'dashboard' }) %>
+
+<!-- Dashboard Content -->
+<div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+        <h2 class="text-2xl font-bold text-slate-800">Bảng điều khiển tổng quan</h2>
+        <p class="text-slate-500 text-sm mt-1">Theo dõi doanh thu, chi phí và hiệu suất hoạt động của FitCity</p>
+    </div>
+    <% const _now = new Date(); const _currentQuarter = Math.ceil((_now.getMonth() + 1) / 3); const _currentYear = _now.getFullYear(); %>
+    <a href="/admin/export-report?quarter=<%= _currentQuarter %>&year=<%= _currentYear %>" class="inline-flex items-center justify-center px-4 py-2 bg-lime-500 hover:bg-lime-600 text-slate-900 font-semibold rounded-lg transition-colors shadow-sm">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Xuất Báo Cáo Q<%= _currentQuarter %>/<%= _currentYear %>
+    </a>
+</div>
+
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Total Revenue -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-lime-50 flex items-center justify-center">
+                <svg class="h-6 w-6 text-lime-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12.5%</span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium mb-1">Tổng doanh thu</p>
+        <h3 class="text-2xl font-bold text-slate-800"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalRevenue) %></h3>
+        <p class="text-xs text-slate-400 mt-2">So với kỳ trước</p>
+    </div>
+
+    <!-- Total Expenses -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-rose-500">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-rose-50 flex items-center justify-center">
+                <svg class="h-6 w-6 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium mb-1">Tổng chi phí</p>
+        <h3 class="text-2xl font-bold text-rose-600"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalExpenses) %></h3>
+        <p class="text-xs text-slate-400 mt-2">Chi phí vận hành đã khấu trừ</p>
+    </div>
+
+    <!-- Net Profit -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-500">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+                <svg class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+        </div>
+        <p class="text-slate-500 text-sm font-medium mb-1">Lợi nhuận ròng</p>
+        <h3 class="text-2xl font-bold text-emerald-600"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(netProfit) %></h3>
+        <p class="text-xs text-slate-400 mt-2">Lợi nhuận thực tế</p>
+    </div>
+
+    <!-- Active Members -->
+    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
+                <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+            </div>
+            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">+5.4%</span>
+        </div>
+        <p class="text-slate-500 text-sm font-medium mb-1">Hội viên hoạt động</p>
+        <h3 class="text-2xl font-bold text-slate-800"><%= activeMembers %></h3>
+        <p class="text-xs text-slate-400 mt-2">Tăng trưởng so với kỳ trước</p>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8">
+    <!-- Revenue Trend -->
+    <div class="lg:col-span-3 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h4 class="text-lg font-bold text-slate-800">Xu hướng doanh thu</h4>
+                <p class="text-slate-500 text-sm">Tổng quan hiệu suất hàng tháng</p>
+            </div>
+            <select class="bg-slate-50 border border-slate-200 text-slate-600 text-xs rounded-lg focus:ring-lime-500 focus:border-lime-500 px-3 py-2">
+                <option>6 tháng qua</option>
+                <option>Năm nay</option>
+            </select>
+        </div>
+        <div class="relative h-64 w-full">
+            <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 400 150">
+                <defs>
+                    <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stop-color="#84cc16" stop-opacity="0.3"></stop>
+                        <stop offset="100%" stop-color="#84cc16" stop-opacity="0"></stop>
+                    </linearGradient>
+                </defs>
+                <path d="M0 150 L0 100 Q 50 80, 100 110 T 200 60 T 300 90 T 400 40 L 400 150 Z" fill="url(#chartGradient)"></path>
+                <path d="M0 100 Q 50 80, 100 110 T 200 60 T 300 90 T 400 40" fill="none" stroke="#84cc16" stroke-linecap="round" stroke-width="3"></path>
+            </svg>
+            <div class="absolute bottom-0 w-full flex justify-between text-[10px] text-slate-400 pt-4 font-medium">
+                <span>Th5</span><span>Th6</span><span>Th7</span><span>Th8</span><span>Th9</span><span>Th10</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staff Performance Leaderboard -->
+    <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h4 class="text-lg font-bold text-slate-800">Hiệu suất nhân viên</h4>
+            <span class="text-lime-600 text-xs font-bold uppercase tracking-widest bg-lime-50 px-2 py-1 rounded-full">Buổi dạy</span>
+        </div>
+        <div class="space-y-4">
+            <% if (typeof ptPerformance !== 'undefined' && ptPerformance.length > 0) { %>
+                <% ptPerformance.forEach(pt => { %>
+                <div class="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full bg-slate-200 overflow-hidden">
+                            <img alt="PT" class="w-full h-full object-cover" src="<%= pt.ptInfo && pt.ptInfo.avatar ? pt.ptInfo.avatar : 'https://ui-avatars.com/api/?name=' + (pt.ptInfo ? pt.ptInfo.name[0] : 'P') + '&background=e2e8f0&color=475569' %>"/>
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-800"><%= pt.ptInfo ? pt.ptInfo.name : 'HLV không xác định' %></p>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider">
+                                <% 
+                                    let roleVN = pt.ptInfo ? pt.ptInfo.role : 'Staff';
+                                    if(roleVN === 'PT') roleVN = 'Huấn luyện viên';
+                                    if(roleVN === 'Manager') roleVN = 'Quản lý';
+                                    if(roleVN === 'Sales') roleVN = 'Kinh doanh';
+                                %>
+                                <%= roleVN %>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-lime-600"><%= pt.sessionCount %></p>
+                        <% const ptProgress = Math.min(100, (pt.sessionCount / 100) * 100).toFixed(0); %>
+                        <div class="w-16 h-1.5 bg-slate-200 rounded-full mt-1 overflow-hidden">
+                            <div class="h-full bg-lime-500 rounded-full perf-bar" data-width="<%= ptProgress %>"></div>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+                <script>
+                    document.querySelectorAll('.perf-bar').forEach(el => {
+                        el.style.width = el.getAttribute('data-width') + '%';
+                    });
+                </script>
+            <% } else { %>
+                <div class="p-8 text-center bg-slate-50 rounded-lg">
+                    <p class="text-slate-500 text-sm">Chưa có PT nào hoàn thành buổi tập trong tháng này.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Contracts Table -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="p-5 border-b border-slate-200 bg-slate-50/50 flex items-center justify-between">
+        <h4 class="text-lg font-bold text-slate-800">Hợp đồng chờ thanh toán gần đây</h4>
+        <a href="/admin/contracts/list" class="text-lime-600 text-xs font-bold hover:underline uppercase tracking-wider">Xem tất cả</a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
+                    <th class="p-4 font-semibold">Tên khách hàng</th>
+                    <th class="p-4 font-semibold">Huấn luyện viên</th>
+                    <th class="p-4 font-semibold">Số tiền</th>
+                    <th class="p-4 font-semibold text-center">Trạng thái</th>
+                    <th class="p-4 font-semibold text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <% if (typeof pendingContracts !== 'undefined' && pendingContracts.length > 0) { %>
+                    <% pendingContracts.forEach(contract => { %>
+                    <tr class="hover:bg-slate-50/70 transition-colors">
+                        <td class="p-4">
+                            <div class="flex items-center gap-3">
+                                <div class="h-9 w-9 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
+                                    <%= contract.client && contract.client.name ? contract.client.name.substring(0, 2).toUpperCase() : 'NA' %>
+                                </div>
+                                <span class="text-sm font-medium text-slate-800"><%= contract.client ? contract.client.name : 'Chưa rõ' %></span>
+                            </div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600"><%= contract.pt ? contract.pt.name : 'Chưa gán PT' %></td>
+                        <td class="p-4 text-sm font-bold text-slate-800"><%= new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(contract.totalAmount) %></td>
+                        <td class="p-4 text-center">
+                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Chờ thanh toán</span>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button class="px-4 py-1.5 bg-lime-500 hover:bg-lime-600 text-slate-900 text-xs font-bold rounded-lg shadow-sm transition-colors">Duyệt</button>
+                        </td>
+                    </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" class="p-8 text-center text-slate-500">Không có hợp đồng chờ thanh toán</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

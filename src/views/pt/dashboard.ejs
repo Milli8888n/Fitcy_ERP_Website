@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FitCity - Bảng điều khiển HLV</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ccff00",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#121212",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glow-border {
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.15);
+            border: 1px solid rgba(204, 255, 0, 0.4);
+        }
+        .neon-text {
+            color: #ccff00;
+        }
+        .bg-dark-card {
+            background-color: #1e1e1e;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen pb-24">
+<%- include('../partials/flash') %>
+<!-- Header Section -->
+<header class="flex items-center justify-between p-6 pt-8">
+<div class="flex flex-col">
+<span class="text-slate-400 text-xs font-medium uppercase tracking-wider">Bảng điều khiển HLV</span>
+<h1 class="text-2xl font-bold tracking-tight">Xin chào, HLV <%= user && user.name ? user.name.split(' ').pop() : 'Marcus' %></h1>
+</div>
+<div class="relative">
+<div class="w-12 h-12 rounded-full border-2 border-primary/20 p-0.5">
+<img alt="Coach Marcus Avatar" class="w-full h-full rounded-full object-cover" data-alt="Close up portrait of a fit professional coach" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIYAap0lMtDgU0mpSP1pvHSoTG5zW2mxVYFAx0-L2bY4HCUjiaKXOq3agVnw0OcnBMPvNUgOKveAd2z0R1VKNEcu9MYxCABlpAbRwCqdTS99nS7DYcCUeQqH-rd4WaF4iaWwW4Rq8pUPvcouHmqovCFrNw8WsEGX23O_rhKVIbPKvDFuyPb23Z6UM7fqOcUfwFocaRX2vSSxzaFiBJrX6XQfGC6bOsBgd5Q0xztCkhC78JNRq5mLjoB2-rwhoI4uOCs0IKn3fPRE0"/>
+</div>
+<div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-primary border-2 border-background-dark rounded-full"></div>
+</div>
+</header>
+<!-- Earnings Hero Card -->
+<section class="px-6 mb-8">
+<div class="bg-dark-card rounded-xl p-6 shadow-xl">
+<div class="flex justify-between items-start mb-4">
+<p class="text-slate-400 text-sm font-medium">Hoa hồng dự kiến</p>
+<span class="material-symbols-outlined text-primary text-xl">payments</span>
+</div>
+<h2 class="text-4xl font-extrabold text-white mb-6">
+    <%= new Intl.NumberFormat('vi-VN').format(typeof estimatedCommission !== 'undefined' ? estimatedCommission : 0) %> 
+    <span class="text-lg font-normal text-slate-400 uppercase">VNĐ</span>
+</h2>
+<div class="space-y-2">
+<div class="flex justify-between text-xs text-slate-400">
+<span>Tiến độ mục tiêu</span>
+<span><%= typeof estimatedCommission !== 'undefined' && typeof targetCommission !== 'undefined' ? ((estimatedCommission / targetCommission) * 100).toFixed(1) : 0 %>%</span>
+</div>
+<% 
+    const commissionProgress = typeof estimatedCommission !== 'undefined' && typeof targetCommission !== 'undefined' && targetCommission > 0 
+        ? Math.min(100, (estimatedCommission / targetCommission) * 100).toFixed(1) 
+        : 0; 
+%>
+<div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary" id="pt-commission-bar" style="width: 0%"></div>
+<script>document.getElementById('pt-commission-bar').style.width = '<%= commissionProgress %>%';</script>
+</div>
+<div class="flex justify-between mt-1">
+<span class="text-[10px] text-slate-500 font-medium">0 VNĐ</span>
+<span class="text-[10px] text-primary font-bold">MỤC TIÊU: <%= typeof targetCommission !== 'undefined' ? (targetCommission / 1000000) : 20 %>M</span>
+</div>
+</div>
+</div>
+</section>
+<% 
+    const nextSession = (typeof roster !== 'undefined' && roster.length > 0) ? roster[0] : null; 
+%>
+
+<!-- Next Session Card (Highlighted) -->
+<section class="px-6 mb-8">
+    <% if (nextSession) { %>
+        <div class="glow-border bg-dark-card rounded-xl overflow-hidden">
+            <div class="bg-primary/10 px-6 py-3 flex justify-between items-center border-b border-primary/20">
+                <span class="text-primary text-xs font-bold tracking-widest uppercase">Khách tiếp theo</span>
+                <span class="text-white text-xs font-bold bg-white/10 px-2 py-1 rounded">
+                    <%= new Date(nextSession.scheduledTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) %>
+                </span>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center gap-4 mb-6">
+                    <img alt="Client Avatar" class="w-14 h-14 rounded-lg object-cover" src="<%= nextSession.client && nextSession.client.avatar ? nextSession.client.avatar : 'https://ui-avatars.com/api/?name=' + (nextSession.client ? nextSession.client.name : 'User') + '&background=333&color=fff' %>"/>
+                    <div>
+                        <h3 class="text-white font-bold text-lg"><%= nextSession.client ? nextSession.client.name : 'Khách hàng' %></h3>
+                        <p class="text-slate-400 text-sm"><%= nextSession.workoutPlan || 'Chương trình luyện tập cá nhân' %></p>
+                    </div>
+                </div>
+                <button onclick="handleCheckIn('<%= nextSession._id %>')" class="w-full bg-primary text-background-dark font-black py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors">
+                    <span class="material-symbols-outlined font-bold">location_on</span>
+                    ĐIỂM DANH (GPS)
+                </button>
+                <p class="text-center text-[10px] text-slate-500 mt-3 flex items-center justify-center gap-1 uppercase tracking-tighter">
+                    <span class="material-symbols-outlined text-xs">info</span>
+                    Phải trong phạm vi 500m từ chi nhánh
+                </p>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="bg-dark-card/30 rounded-xl p-8 border border-dashed border-white/5 text-center">
+            <p class="text-slate-500 text-sm italic">Hôm nay bạn không có lịch tập nào.</p>
+        </div>
+    <% } %>
+</section>
+
+<!-- Today's Roster -->
+<section class="px-6 mb-4">
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-white font-bold text-lg">Buổi tập hôm nay (<%= typeof rosterCount !== 'undefined' ? rosterCount : 0 %>)</h3>
+    </div>
+    <div class="space-y-3 pb-8">
+        <% if (typeof roster !== 'undefined' && roster.length > 0) { %>
+            <% roster.forEach(session => { %>
+                <div class="flex items-center justify-between bg-dark-card/50 p-4 rounded-xl border border-white/5 group hover:border-primary/30 transition-all">
+                    <div class="flex items-center gap-3">
+                        <img alt="Client" class="w-10 h-10 rounded-full object-cover" src="<%= session.client && session.client.avatar ? session.client.avatar : 'https://ui-avatars.com/api/?name=' + (session.client ? session.client.name : 'User') + '&background=333&color=fff' %>"/>
+                        <div>
+                            <p class="text-white font-bold text-sm"><%= session.client ? session.client.name : 'Unknown' %></p>
+                            <p class="text-slate-500 text-xs"><%= new Date(session.scheduledTime).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) %></p>
+                            <% if (session.status === 'In_Progress') { %>
+                                <span class="text-[9px] font-black text-primary uppercase tracking-tighter animate-pulse">● Đang diễn ra</span>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <% if (session.status === 'Scheduled') { %>
+                            <button onclick="handleCheckIn('<%= session._id %>')" class="text-[10px] font-bold text-background-dark bg-primary px-4 py-2 rounded-lg uppercase tracking-widest hover:bg-white transition-all shadow-lg shadow-primary/20">
+                                Điểm danh
+                            </button>
+                        <% } else if (session.status === 'In_Progress') { %>
+                            <form action="/pt/sessions/check-out/<%= session._id %>" method="POST">
+                                <button class="text-[10px] font-bold text-white bg-slate-700 px-4 py-2 rounded-lg uppercase tracking-widest hover:bg-red-500 transition-all">
+                                    Kết thúc
+                                </button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% }) %>
+            
+            <script>
+                function handleCheckIn(sessionId) {
+                    if (!navigator.geolocation) {
+                        alert('Trình duyệt không hỗ trợ định vị. Vui lòng sử dụng thiết bị di động.');
+                        return;
+                    }
+    
+                    const btn = event.currentTarget;
+                    btn.innerHTML = '<span class="material-symbols-outlined animate-spin inline-block text-[12px]">sync</span> Đang kiểm tra...';
+                    btn.disabled = true;
+    
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const { latitude, longitude } = position.coords;
+                            
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = `/pt/sessions/check-in/${sessionId}`;
+                            
+                            const latInput = document.createElement('input');
+                            latInput.type = 'hidden'; latInput.name = 'latitude'; latInput.value = latitude;
+                            
+                            const lngInput = document.createElement('input');
+                            lngInput.type = 'hidden'; lngInput.name = 'longitude'; lngInput.value = longitude;
+                            
+                            form.appendChild(latInput);
+                            form.appendChild(lngInput);
+                            document.body.appendChild(form);
+                            form.submit();
+                        },
+                        (error) => {
+                            alert('Không thể lấy vị trí: ' + error.message);
+                            btn.innerHTML = 'Điểm danh';
+                            btn.disabled = false;
+                        },
+                        { enableHighAccuracy: true, timeout: 5000 }
+                    );
+                }
+            </script>
+        <% } %>
+    </div>
+</section>
+
+<!-- Floating Bottom Navigation -->
+<%- include('../partials/nav_pt', { activePage: 'dashboard' }) %>
+</body></html>

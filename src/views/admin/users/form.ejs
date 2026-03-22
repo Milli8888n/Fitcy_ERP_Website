@@ -1,0 +1,135 @@
+<%- include('../../partials/header', { title: isEdit ? 'Chỉnh sửa Tài khoản' : 'Tạo Tài khoản mới', activePage: 'users' }) %>
+
+<div class="mb-6 flex flex-col sm:flex-row justify-between items-start gap-4">
+    <div>
+        <h2 class="text-2xl font-bold text-slate-800"><%= isEdit ? 'Điều chỉnh Hồ sơ Nhân viên' : 'Đăng ký Nhân sự mới' %></h2>
+        <p class="text-slate-500 text-sm mt-1">
+            <a href="/admin/users/list" class="text-blue-600 hover:underline">Quay lại danh bạ</a> / 
+            <span><%= isEdit ? 'Chỉnh sửa' : 'Tạo mới' %></span>
+        </p>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm max-w-4xl overflow-hidden pb-8">
+    <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+        <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+            <svg class="h-5 w-5 text-lime-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Biểu mẫu Hồ sơ Nhan sự
+        </h3>
+    </div>
+    
+    <form action="/admin/users/<%= isEdit ? 'update/' + userData._id : 'store' %>" method="POST" class="p-6 md:p-8 space-y-6">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Họ Tên -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Họ và Tên <span class="text-red-500">*</span></label>
+                <input type="text" id="name" name="name" required value="<%= typeof userData !== 'undefined' ? userData.name : '' %>"
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 focus:ring-opacity-50 text-sm py-2 px-3 border bg-white"
+                    placeholder="Nguyễn Văn A">
+            </div>
+
+            <!-- Email (Login ID) -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email Đăng nhập <span class="text-red-500">*</span></label>
+                <input type="email" id="email" name="email" required value="<%= typeof userData !== 'undefined' ? userData.email : '' %>"
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white"
+                    placeholder="nguyenvana@fitcity.com">
+            </div>
+
+            <!-- Mật khẩu -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-slate-700 mb-1">Mật khẩu <%= isEdit ? '(Chỉ điền nếu muốn cấp lại Pass)' : '<span class="text-red-500">*</span>' %></label>
+                <input type="password" id="password" name="password" minlength="6" <%= isEdit ? '' : 'required' %>
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white"
+                    placeholder="Mật khẩu phải tối thiểu 6 ký tự">
+            </div>
+
+            <!-- Số điện thoại -->
+            <div>
+                <label for="phone" class="block text-sm font-medium text-slate-700 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+                <input type="text" id="phone" name="phone" required value="<%= typeof userData !== 'undefined' ? userData.phone : '' %>"
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white"
+                    placeholder="09xx...">
+            </div>
+            
+            <!-- Trạng thái (chỉ hiện khi sửa) -->
+            <% if(isEdit) { %>
+            <div>
+                <label for="status" class="block text-sm font-medium text-slate-700 mb-1">Trạng Thái Làm Việc</label>
+                <select id="status" name="status" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white">
+                    <option value="Active" <%= userData.status === 'Active' ? 'selected' : '' %>>Đang làm việc</option>
+                    <option value="Inactive" <%= userData.status === 'Inactive' ? 'selected' : '' %>>Nghỉ việc / Tạm hoãn</option>
+                    <option value="Banned" <%= userData.status === 'Banned' ? 'selected' : '' %>>Vô hiệu hoá tài khoản</option>
+                </select>
+            </div>
+            <% } %>
+
+            <!-- Chức vụ & Quyền thao tác -->
+            <div>
+                <label for="role" class="block text-sm font-bold text-indigo-900 mb-1">Vai trò (Phân quyền Hệ thống) <span class="text-red-500">*</span></label>
+                <select id="role" name="role" required class="block w-full rounded-md border-indigo-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 text-sm py-2 px-3 border bg-indigo-50 font-medium">
+                    <!-- Manager cannot create Admin/SA usually, but since this is broad HR module, let's keep all except SA unless user is SA -->
+                    <option value="PT" <%= (typeof userData !== 'undefined' && userData.role === 'PT') ? 'selected' : '' %>>Huấn luyện viên (PT)</option>
+                    <option value="Sales" <%= (typeof userData !== 'undefined' && userData.role === 'Sales') ? 'selected' : '' %>>Nhân viên Kinh doanh</option>
+                    <option value="Accountant" <%= (typeof userData !== 'undefined' && userData.role === 'Accountant') ? 'selected' : '' %>>Kế toán</option>
+                    <option value="Marketing" <%= (typeof userData !== 'undefined' && userData.role === 'Marketing') ? 'selected' : '' %>>Quảng cáo</option>
+                    <option value="Manager" <%= (typeof userData !== 'undefined' && userData.role === 'Manager') ? 'selected' : '' %>>Quản lý Cơ sở</option>
+                    <% if(user && (user.role === 'SA' || user.role === 'Admin')) { %>
+                        <option value="Admin" <%= (typeof userData !== 'undefined' && userData.role === 'Admin') ? 'selected' : '' %>>Quản trị viên (Admin)</option>
+                    <% } %>
+                    <% if(user && user.role === 'SA') { %>
+                        <option value="SA" <%= (typeof userData !== 'undefined' && userData.role === 'SA') ? 'selected' : '' %>>Hệ thống gốc (SuperAdmin)</option>
+                    <% } %>
+                </select>
+            </div>
+
+            <!-- Điều chuyển Công tác về Chi nhánh -->
+            <div class="sm:col-span-2 bg-slate-50 p-4 border border-slate-200 rounded-lg">
+                <label for="branch" class="block text-sm font-bold text-slate-800 mb-2">Điều chuyển Công tác (Phân bổ Chi nhánh) <span class="text-red-500">*</span></label>
+                <select id="branch" name="branch" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white">
+                    <option value="">-- [Tùy chọn] Chọn Một Chi nhánh (Dành cho cấp nhân viên) --</option>
+                    <% if (typeof branches !== 'undefined' && branches.length > 0) { %>
+                        <% branches.forEach(br => { %>
+                            <option value="<%= br._id %>" <%= (typeof userData !== 'undefined' && userData.branch && userData.branch.toString() === br._id.toString()) ? 'selected' : '' %>>
+                                <%= br.name %> - <%= br.address %>
+                            </option>
+                        <% }) %>
+                    <% } %>
+                </select>
+                <p class="mt-2 text-xs text-slate-500">Lưu ý: Đối với Admin hoặc SA thì không cần chọn Chi nhánh (Có quyền truy cập toàn bộ).</p>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-6 border-t border-slate-100">
+            <a href="/admin/users/list" class="px-5 py-2 text-sm font-medium rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors">Hủy & Trở về</a>
+            <button type="submit" class="px-5 py-2 text-sm font-medium rounded-md bg-lime-500 text-slate-900 border border-transparent shadow hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-500 transition-colors">
+                <%= isEdit ? 'Ghi đè thay đổi' : 'Cấp phát Tài Khoản' %>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Auto-toggle validation logic client-side -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleSel = document.getElementById('role');
+        const branchSel = document.getElementById('branch');
+        
+        function enforceBranchValidation() {
+            if (roleSel.value === 'SA' || roleSel.value === 'Admin') {
+                branchSel.removeAttribute('required');
+                // Could also disable the select or hide it
+            } else {
+                branchSel.setAttribute('required', 'required');
+            }
+        }
+        
+        roleSel.addEventListener('change', enforceBranchValidation);
+        enforceBranchValidation(); // On load
+    });
+</script>
+
+<%- include('../../partials/footer') %>

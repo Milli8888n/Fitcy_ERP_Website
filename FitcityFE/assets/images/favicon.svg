@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="515" height="512"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 515 512">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #1a150b;
+      }
+
+      .cls-2 {
+        fill: #fee000;
+      }
+    </style>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.6.0, SVG Export Plug-In . SVG Version: 1.2.0 Build 709)  -->
+  <g>
+    <g id="SvgjsG1005">
+      <rect class="cls-2" y=".14" width="515" height="511.72"></rect>
+      <path class="cls-1" d="M254.38,52.41c-46.15,0-113.52,2.12-167.1,6.9v79.57l23.34,2.12v230.77l-23.34,2.1v79.58h171.35v-79.58l-28.64-2.1v-45.64c15.92.54,25.46.54,38.73.54,94.43,0,183.02-20.16,183.02-135.8v-4.79c0-114.05-88.59-133.68-197.35-133.68ZM331.84,190.87c0,36.6-21.75,47.2-66.84,47.2-12.21,0-24.93-.53-35.02-.53v-96.54c9.54-.53,22.81-.53,34.48-.53,45.63,0,67.38,7.43,67.38,45.61v4.79Z"></path>
+    </g>
+  </g>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>

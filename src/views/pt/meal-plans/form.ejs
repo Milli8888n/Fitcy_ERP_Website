@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phác đồ Dinh dưỡng - FitCity PT</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ccff00",
+                        "background-dark": "#121212",
+                        "dark-card": "#1e1e1e",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-dark text-slate-100 min-h-screen pb-32">
+    <header class="p-8 pb-4 flex items-center gap-4">
+        <a href="/pt/meal-plans" class="size-10 bg-dark-card border border-white/10 rounded-xl flex items-center justify-center text-slate-500 hover:text-white transition-all">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+        </a>
+        <div>
+            <h1 class="text-2xl font-extrabold text-white tracking-tight leading-none">Phác đồ Mới</h1>
+            <p class="text-slate-500 text-xs mt-1 uppercase tracking-widest font-bold">Thiết kế lộ trình ăn uống cho hội viên</p>
+        </div>
+    </header>
+
+    <main class="px-8 mt-6">
+        <form action="/pt/meal-plans/store" method="POST" id="mealPlanForm" class="space-y-6">
+            <!-- Basic Settings Card -->
+            <section class="bg-dark-card border border-white/5 p-8 rounded-3xl space-y-6 shadow-2xl">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Chọn Hội Viên</label>
+                    <select name="contractId" required class="w-full bg-background-dark border border-white/10 rounded-2xl py-4 px-6 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all appearance-none">
+                        <% if (contracts.length > 0) { %>
+                            <% contracts.forEach(c => { %>
+                                <option value="<%= c._id %>">
+                                    <%= c.client.name %> • <%= c.servicePackage.name %>
+                                </option>
+                            <% }) %>
+                        <% } else { %>
+                            <option disabled>Không tìm thấy hội viên đang hoạt động</option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Mục tiêu</label>
+                        <select name="goal" class="w-full bg-background-dark border border-white/10 rounded-2xl py-4 px-6 text-white focus:border-primary outline-none">
+                            <option value="Weight Loss">Giảm cân</option>
+                            <option value="Muscle Gain">Tăng cơ</option>
+                            <option value="Maintenance">Duy trì</option>
+                            <option value="Endurance">Sức bền</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Kcal mỗi ngày</label>
+                        <input type="number" name="calories" value="2000" class="w-full bg-background-dark border border-white/10 rounded-2xl py-4 px-6 text-white focus:border-primary outline-none font-black text-xl">
+                    </div>
+                </div>
+
+                <!-- Macros Section -->
+                <div class="space-y-4 pt-4 border-t border-white/5 mt-4">
+                    <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] block mb-2">Tỷ lệ dinh dưỡng (%)</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-background-dark/50 p-4 border border-white/5 rounded-3xl text-center">
+                            <label class="text-[9px] font-bold text-slate-600 block mb-1">ĐẠM (PRO)</label>
+                            <input type="number" name="protein" value="30" class="w-full bg-transparent text-center font-black text-primary text-xl outline-none">
+                        </div>
+                        <div class="bg-background-dark/50 p-4 border border-white/5 rounded-3xl text-center">
+                            <label class="text-[9px] font-bold text-slate-600 block mb-1">T.BỘ (CHO)</label>
+                            <input type="number" name="carbs" value="40" class="w-full bg-transparent text-center font-black text-primary text-xl outline-none">
+                        </div>
+                        <div class="bg-background-dark/50 p-4 border border-white/5 rounded-3xl text-center">
+                            <label class="text-[9px] font-bold text-slate-600 block mb-1">BÉO (FAT)</label>
+                            <input type="number" name="fat" value="30" class="w-full bg-transparent text-center font-black text-primary text-xl outline-none">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Meals Schedule Card -->
+            <section class="bg-dark-card border border-white/5 p-8 rounded-3xl space-y-6 shadow-2xl">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-extrabold text-lg text-white">Lịch trình bữa ăn</h3>
+                    <button type="button" onclick="addMealRow()" class="text-[10px] font-black text-primary uppercase border border-primary/30 px-3 py-1.5 rounded-full hover:bg-primary/10 transition-all">Thêm bữa</button>
+                </div>
+                <div id="mealsContainer" class="space-y-4">
+                    <div class="meal-row bg-background-dark/50 border border-white/5 p-6 rounded-3xl relative group">
+                        <div class="flex gap-4 mb-3">
+                            <input type="text" placeholder="Tên bữa (VD: Bữa sáng)" class="meal-name flex-1 bg-transparent border-b border-white/10 focus:border-primary outline-none py-1 text-sm font-bold text-white tracking-tight" value="Bữa sáng">
+                            <input type="text" placeholder="Giờ" class="meal-time w-20 bg-transparent border-b border-white/10 focus:border-primary outline-none py-1 text-sm font-bold text-primary text-right" value="08:00 AM">
+                        </div>
+                        <textarea placeholder="Thành phần, định lượng và calo nếu có..." class="meal-foods w-full bg-transparent text-slate-400 text-xs py-2 outline-none h-16 resize-none">2 Quả trứng luộc, 1 Lát bánh mì đen, 1/2 Quả bơ</textarea>
+                    </div>
+                </div>
+            </section>
+
+            <button type="submit" class="w-full bg-primary text-background-dark py-5 rounded-3xl font-black text-lg shadow-xl shadow-primary/20 hover:brightness-110 active:scale-95 transition-all">LƯU PHÁC ĐỒ</button>
+            <input type="hidden" name="mealsJson" id="mealsJson">
+        </form>
+    </main>
+
+    <script>
+        function addMealRow() {
+            const container = document.getElementById('mealsContainer');
+            const row = document.createElement('div');
+            row.className = 'meal-row bg-background-dark/50 border border-white/5 p-6 rounded-3xl relative group';
+            row.innerHTML = `
+                <div class="flex gap-4 mb-3">
+                    <input type="text" placeholder="Meal Name" class="meal-name flex-1 bg-transparent border-b border-white/10 focus:border-primary outline-none py-1 text-sm font-bold text-white tracking-tight">
+                    <input type="text" placeholder="Time" class="meal-time w-20 bg-transparent border-b border-white/10 focus:border-primary outline-none py-1 text-sm font-bold text-primary text-right">
+                </div>
+                <textarea placeholder="Ingredients..." class="meal-foods w-full bg-transparent text-slate-400 text-xs py-2 outline-none h-16 resize-none"></textarea>
+                <button type="button" onclick="this.parentElement.remove()" class="absolute -top-1 -right-1 size-6 bg-red-500 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all">
+                    <span class="material-symbols-outlined text-[12px]">close</span>
+                </button>
+            `;
+            container.appendChild(row);
+        }
+
+        document.getElementById('mealPlanForm').addEventListener('submit', function(e) {
+            const mealRows = document.querySelectorAll('.meal-row');
+            const meals = Array.from(mealRows).map(row => ({
+                time: row.querySelector('.meal-time').value,
+                notes: row.querySelector('.meal-name').value + ': ' + row.querySelector('.meal-foods').value,
+                foodItems: []
+            }));
+            document.getElementById('mealsJson').value = JSON.stringify(meals);
+        });
+    </script>
+
+    <%- include('../../partials/nav_pt', { activePage: 'meal-plans' }) %>
+</body>
+</html>

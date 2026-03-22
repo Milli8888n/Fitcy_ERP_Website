@@ -1,0 +1,179 @@
+// 18_document_responsive_logic.js - Document Responsive Behavior
+const fs = require('fs');
+const path = require('path');
+
+const OUTPUT_PATH = path.join(process.cwd(), 'docs', 'analysis', 'responsive-logic.json');
+
+console.log('📱 Documenting Responsive Logic...\n');
+
+const responsiveLogic = {
+    breakpoints: {
+        mobile: { max: 767, description: 'Mobile devices' },
+        tablet: { min: 768, max: 1023, description: 'Tablets' },
+        desktop: { min: 1024, max: 1439, description: 'Small desktops' },
+        large: { min: 1440, description: 'Large desktops' }
+    },
+
+    componentBehavior: [
+        {
+            component: 'home-header',
+            mobile: {
+                layout: 'Stack slides vertically',
+                navigation: 'Swipe gestures enabled',
+                autoplay: 'Disabled (user control)',
+                animations: 'Reduced motion (faster durations)'
+            },
+            desktop: {
+                layout: 'Full-screen slider',
+                navigation: 'Arrow keys + bullets',
+                autoplay: 'Enabled (5s interval)',
+                animations: 'Full GSAP timelines'
+            }
+        },
+        {
+            component: 'menu-grid',
+            mobile: {
+                layout: 'Full-screen overlay',
+                trigger: 'Burger button',
+                close: 'Swipe down or close button',
+                animation: 'Slide from top'
+            },
+            desktop: {
+                layout: 'Full-screen grid',
+                trigger: 'Burger button',
+                close: 'Close button or Escape key',
+                animation: 'Fade + scale'
+            }
+        },
+        {
+            component: 'phive-clubs',
+            mobile: {
+                layout: 'Horizontal scroll (native)',
+                navigation: 'Swipe/drag',
+                snap: 'Enabled (CSS scroll-snap)',
+                itemsVisible: '1.2 items'
+            },
+            desktop: {
+                layout: 'Grid with GSAP Flip animation',
+                navigation: 'Hover + click',
+                snap: 'Disabled',
+                itemsVisible: '3-4 items'
+            }
+        },
+        {
+            component: 'three-scene',
+            mobile: {
+                enabled: 'Conditional (check device performance)',
+                instanceCount: '50 (reduced)',
+                interactions: 'Touch to rotate',
+                quality: 'Low (pixelRatio: 1)'
+            },
+            desktop: {
+                enabled: 'Always',
+                instanceCount: '100',
+                interactions: 'Mouse move + click',
+                quality: 'High (pixelRatio: 2)'
+            }
+        },
+        {
+            component: 'bar (menu)',
+            mobile: {
+                position: 'Fixed top',
+                ctaButton: 'Hidden on scroll',
+                height: '60px'
+            },
+            desktop: {
+                position: 'Fixed top',
+                ctaButton: 'Visible (hides on scroll down)',
+                height: '80px'
+            }
+        }
+    ],
+
+    touchHandlers: [
+        {
+            component: 'home-header',
+            event: 'touchstart',
+            handler: 'Record start position',
+            code: 'const startX = e.touches[0].clientX;'
+        },
+        {
+            component: 'home-header',
+            event: 'touchmove',
+            handler: 'Calculate delta and update slide position',
+            code: 'const deltaX = e.touches[0].clientX - startX; gsap.set(slider, { x: deltaX });'
+        },
+        {
+            component: 'home-header',
+            event: 'touchend',
+            handler: 'Determine swipe direction and navigate',
+            code: 'if (Math.abs(deltaX) > 50) { deltaX > 0 ? prevSlide() : nextSlide(); }'
+        },
+        {
+            component: 'menu-grid',
+            event: 'touchstart',
+            handler: 'Record start Y position',
+            code: 'const startY = e.touches[0].clientY;'
+        },
+        {
+            component: 'menu-grid',
+            event: 'touchmove',
+            handler: 'Track vertical swipe',
+            code: 'const deltaY = e.touches[0].clientY - startY;'
+        },
+        {
+            component: 'menu-grid',
+            event: 'touchend',
+            handler: 'Close menu if swipe down > 100px',
+            code: 'if (deltaY > 100) { closeMenu(); }'
+        }
+    ],
+
+    mediaQueries: {
+        hover: '@media (hover: hover)',
+        reducedMotion: '@media (prefers-reduced-motion: reduce)',
+        darkMode: '@media (prefers-color-scheme: dark)',
+        highContrast: '@media (prefers-contrast: high)'
+    },
+
+    implementation: {
+        library: 'Vue useMediaQuery composable or CSS media queries',
+        example: `
+// composables/useResponsive.ts
+import { useMediaQuery } from '@vueuse/core';
+
+export function useResponsive() {
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+  
+  return {
+    isMobile,
+    isTablet,
+    isDesktop,
+    prefersReducedMotion
+  };
+}
+
+// In component:
+const { isMobile, prefersReducedMotion } = useResponsive();
+
+const animationDuration = computed(() => 
+  prefersReducedMotion.value ? 0.3 : isMobile.value ? 0.5 : 1
+);
+    `.trim()
+    }
+};
+
+// Save
+fs.mkdirSync(path.dirname(OUTPUT_PATH), { recursive: true });
+fs.writeFileSync(OUTPUT_PATH, JSON.stringify(responsiveLogic, null, 2));
+
+console.log(`✅ Documented responsive behavior`);
+console.log(`💾 Saved to ${OUTPUT_PATH}\n`);
+
+console.log('📱 Responsive Patterns:');
+console.log(`   ${responsiveLogic.componentBehavior.length} components with mobile/desktop variants`);
+console.log(`   ${responsiveLogic.touchHandlers.length} touch event handlers`);
+console.log(`   ${Object.keys(responsiveLogic.mediaQueries).length} media query patterns`);

@@ -1,0 +1,90 @@
+<%- include('../../partials/header', { title: isEdit ? 'Chỉnh sửa Gói tậpo' : 'Thêm mới Gói tập', activePage: 'packages' }) %>
+
+<div class="mb-6 flex items-center justify-between">
+    <div>
+        <h2 class="text-2xl font-bold text-slate-800"><%= isEdit ? 'Cập nhật' : 'Tạo mới' %> Dịch vụ</h2>
+        <p class="text-slate-500 text-sm mt-1">
+            <a href="/admin/packages/list" class="text-blue-600 hover:underline">Quay lại danh sách</a> / 
+            <span><%= isEdit ? 'Chỉnh sửa' : 'Tạo mới' %></span>
+        </p>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm max-w-3xl overflow-hidden pb-8">
+    <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+        <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+            <svg class="h-5 w-5 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Thông tin chi tiết Gói tập
+        </h3>
+    </div>
+    <form action="/admin/packages/<%= isEdit ? 'update/' + pkg._id : 'store' %>" method="POST" class="p-6 md:p-8 space-y-6">
+        
+        <!-- Tên gói tập -->
+        <div>
+            <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Tên gói tập <span class="text-red-500">*</span></label>
+            <input type="text" id="name" name="name" required value="<%= typeof pkg !== 'undefined' ? pkg.name : '' %>"
+                class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 focus:ring-opacity-50 text-sm py-2 px-3 border"
+                placeholder="VD: Gói Yoga 3 Tháng Cơ Bản">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Loại hình dịch vụ -->
+            <div>
+                <label for="type" class="block text-sm font-medium text-slate-700 mb-1">Phân loại Dịch vụ <span class="text-red-500">*</span></label>
+                <select id="type" name="type" required
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 focus:ring-opacity-50 text-sm py-2 px-3 border bg-white">
+                    <% const types = ['Gym', 'Yoga', 'PT', 'GroupX', 'Zumba', 'Boxing']; %>
+                    <% types.forEach(t => { %>
+                        <option value="<%= t %>" <%= (typeof pkg !== 'undefined' && pkg.type === t) ? 'selected' : '' %>><%= t %></option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <!-- Giá tiền -->
+            <div>
+                <label for="price" class="block text-sm font-medium text-slate-700 mb-1">Cước phí dịch vụ gốc (VNĐ) <span class="text-red-500">*</span></label>
+                <div class="relative">
+                    <input type="number" id="price" name="price" required min="0" value="<%= typeof pkg !== 'undefined' ? pkg.price : '' %>"
+                        class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 pl-3 pr-10 border bg-slate-50/50"
+                        placeholder="VD: 5000000">
+                    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400 font-medium text-sm">₫</span>
+                </div>
+            </div>
+
+            <!-- Số ngày hiệu lực -->
+            <div>
+                <label for="duration" class="block text-sm font-medium text-slate-700 mb-1">Thời hạn sử dụng (Tính bằng Ngày) <span class="text-red-500">*</span></label>
+                <input type="number" id="duration" name="duration" required min="1" value="<%= typeof pkg !== 'undefined' ? pkg.duration : 30 %>"
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border"
+                    placeholder="Đơn vị: Ngày (VD: 30, 90, 365)">
+            </div>
+
+            <!-- Phân bổ số buổi (tuỳ chọn) -->
+            <div>
+                <label for="sessions" class="block text-sm font-medium text-slate-700 mb-1">Số lượng buổi tập (Tuỳ chọn cho PT/Session)</label>
+                <input type="number" id="sessions" name="sessions" min="1" value="<%= typeof pkg !== 'undefined' ? pkg.sessions : '' %>"
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white"
+                    placeholder="Bỏ trống nếu tập không giới hạn số lượt">
+            </div>
+        </div>
+
+        <!-- Mô tả -->
+        <div>
+            <label for="description" class="block text-sm font-medium text-slate-700 mb-1">Mô tả và Quảng cáo cho gói tập</label>
+            <textarea id="description" name="description" rows="4"
+                class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border"
+                placeholder="Nhập thông tin giới thiệu để hiển thị cho Sale chốt Sale..."><%= typeof pkg !== 'undefined' ? pkg.description : '' %></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-6 border-t border-slate-100">
+            <a href="/admin/packages/list" class="px-5 py-2 text-sm font-medium rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors">Hủy</a>
+            <button type="submit" class="px-5 py-2 text-sm font-medium rounded-md bg-lime-500 text-slate-900 border border-transparent shadow hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2 transition-colors">
+                <%= isEdit ? 'Lưu chỉnh sửa' : 'Xác nhận Thêm Gói' %>
+            </button>
+        </div>
+    </form>
+</div>
+
+<%- include('../../partials/footer') %>

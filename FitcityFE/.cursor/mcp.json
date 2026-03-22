@@ -1,0 +1,10 @@
+{
+    "mcpServers": {
+        "blender": {
+            "command": "C:\\Users\\ADMIN\\.local\\bin\\uvx.exe",
+            "args": [
+                "blender-mcp"
+            ]
+        }
+    }
+}

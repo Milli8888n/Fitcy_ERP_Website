@@ -1,0 +1,203 @@
+<%- include('../../partials/header', { title: isEdit ? 'Chỉnh sửa Hoá đơn' : 'Tạo lập Hợp Đồng Biên Lai', activePage: 'contracts' }) %>
+
+<div class="mb-6 flex flex-col sm:flex-row justify-between items-start gap-4">
+    <div>
+        <h2 class="text-2xl font-bold text-slate-800"><%= isEdit ? 'Cập nhật Thanh toán Hợp đồng' : 'Thiết lập Hợp đồng Mới' %></h2>
+        <p class="text-slate-500 text-sm mt-1">
+            <a href="/admin/contracts/list" class="text-blue-600 hover:underline">Về lại danh sách hoá đơn</a> / 
+            <span><%= isEdit ? 'Chỉnh sửa' : 'Checkout & Tạo Bill' %></span>
+        </p>
+    </div>
+</div>
+
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm max-w-5xl overflow-hidden pb-8">
+    <div class="px-6 py-4 border-b border-rose-200 bg-rose-50/50">
+        <h3 class="font-semibold text-rose-800 flex items-center gap-2">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Chứng từ Tài Chính & Cấp Dịch vụ
+        </h3>
+    </div>
+    
+    <form action="/admin/contracts/<%= isEdit ? 'update/' + contract._id : 'store' %>" method="POST" class="p-6 md:p-8 space-y-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            <!-- Cột Trái: Thông tin Bán hàng cơ bản -->
+            <div class="space-y-6">
+                <!-- Chọn Khách hàng -->
+                <div>
+                    <label for="client" class="block text-sm font-bold text-slate-700 mb-1">Khách Hàng <span class="text-red-500">*</span></label>
+                    <% if(isEdit) { %>
+                        <input type="text" disabled value="<%= contract.client ? contract.client.name : 'Unknown' %>" class="block w-full rounded-md border-slate-300 bg-slate-100 shadow-sm text-sm py-2 px-3">
+                        <input type="hidden" name="client" value="<%= contract.client ? contract.client._id : '' %>">
+                        <p class="mt-1 text-xs text-rose-500 font-medium">Không thể đổi khách hàng sau khi sinh biên lai.</p>
+                    <% } else { %>
+                        <select id="client" name="client" required class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 text-sm py-2 px-3 border bg-white">
+                            <option value="">-- Mục bắt buộc --</option>
+                            <% if(typeof clients !== 'undefined') { %>
+                                <% clients.forEach(c => { %>
+                                    <option value="<%= c._id %>" <%= (typeof contract !== 'undefined' && contract.client && contract.client.toString() === c._id.toString()) ? 'selected' : '' %>>
+                                        <%= c.name %> (<%= c.email %>)
+                                    </option>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                    <% } %>
+                </div>
+
+                <!-- Chọn Gói Dịch vụ -->
+                <div>
+                    <label for="servicePackage" class="block text-sm font-bold text-slate-700 mb-1">Gói Tập <span class="text-red-500">*</span></label>
+                    <select id="servicePackage" name="servicePackage" required <%= isEdit ? 'disabled' : '' %> class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 text-sm py-2 px-3 border <%= isEdit ? 'bg-slate-100' : 'bg-white' %>">
+                        <option value="">-- Mục bắt buộc --</option>
+                        <% if(typeof packages !== 'undefined') { %>
+                            <% packages.forEach(pkg => { %>
+                                <option value="<%= pkg._id %>" data-price="<%= pkg.price %>" <%= (typeof contract !== 'undefined' && contract.servicePackage && contract.servicePackage.toString() === pkg._id.toString()) ? 'selected' : '' %>>
+                                    <%= pkg.name %> - [<%= pkg.type %>] Giá gốc: <%= pkg.price %> VNĐ
+                                </option>
+                            <% }) %>
+                        <% } %>
+                    </select>
+                    <% if(isEdit) { %>
+                        <input type="hidden" name="servicePackage" value="<%= contract.servicePackage ? contract.servicePackage._id : '' %>">
+                    <% } %>
+                </div>
+
+                <!-- Chọn Chi nhánh -->
+                <div>
+                    <label for="branch" class="block text-sm font-bold text-slate-700 mb-1">Chi nhánh Giao dịch <span class="text-red-500">*</span></label>
+                    <select id="branch" name="branch" required <%= isEdit ? 'disabled' : '' %> class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 text-sm py-2 px-3 border <%= isEdit ? 'bg-slate-100' : 'bg-white' %>">
+                        <% if(typeof branches !== 'undefined') { %>
+                            <% branches.forEach(br => { %>
+                                <option value="<%= br._id %>" <%= (typeof contract !== 'undefined' && contract.branch && contract.branch.toString() === br._id.toString()) ? 'selected' : '' %>>
+                                    <%= br.name %>
+                                </option>
+                            <% }) %>
+                        <% } %>
+                    </select>
+                    <% if(isEdit) { %>
+                        <input type="hidden" name="branch" value="<%= contract.branch ? contract.branch._id : '' %>">
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Cột Phải: Thông số Thanh toán & Quyền hạn -->
+            <div class="space-y-6">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Phân bổ Sales -->
+                    <div>
+                        <label for="sales" class="block text-sm font-medium text-slate-700 mb-1">Bộ phận Kinh doanh</label>
+                        <select id="sales" name="sales" required <%= isEdit ? 'disabled' : '' %> class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 text-sm py-2 px-1 border <%= isEdit ? 'bg-slate-100' : 'bg-white' %>">
+                            <% if(typeof salesStaff !== 'undefined') { %>
+                                <% salesStaff.forEach(s => { %>
+                                    <!-- Mặc định chọn chính mình nếu là Sales -->
+                                    <option value="<%= s._id %>" <%= (typeof contract !== 'undefined' && contract.sales && contract.sales.toString() === s._id.toString()) || (typeof user !== 'undefined' && user && user.id && user.id.toString() === s._id.toString()) ? 'selected' : '' %>>
+                                        <%= s.name %>
+                                    </option>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                        <% if(isEdit) { %>
+                            <input type="hidden" name="sales" value="<%= contract.sales ? contract.sales._id : '' %>">
+                        <% } %>
+                    </div>
+
+                    <!-- Chỉ định kèm PT -->
+                    <div>
+                        <label for="pt" class="block text-sm font-medium text-slate-700 mb-1">Huấn luyện viên cá nhân (Tùy chọn)</label>
+                        <select id="pt" name="pt" <%= isEdit ? 'disabled' : '' %> class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 text-sm py-2 px-1 border <%= isEdit ? 'bg-slate-100' : 'bg-white' %>">
+                            <option value="">-- Không cần PT --</option>
+                            <% if(typeof pts !== 'undefined') { %>
+                                <% pts.forEach(p => { %>
+                                    <option value="<%= p._id %>" <%= (typeof contract !== 'undefined' && contract.pt && contract.pt.toString() === p._id.toString()) ? 'selected' : '' %>>
+                                        <%= p.name %>
+                                    </option>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                        <% if(isEdit) { %>
+                            <input type="hidden" name="pt" value="<%= contract.pt ? contract.pt._id : '' %>">
+                        <% } %>
+                    </div>
+                </div>
+
+                    <label for="couponCode" class="block text-sm font-bold text-slate-700 mb-1">Mã giảm giá / Tiếp thị liên kết <%= isEdit ? '[Đã khoá]' : '' %></label>
+                    <input type="text" id="couponCode" name="couponCode" <%= isEdit ? 'disabled' : '' %> 
+                        class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 text-sm py-2 px-3 border uppercase font-mono <%= isEdit ? 'bg-slate-100' : 'bg-white' %>"
+                        placeholder="VD: FITCITY50">
+                </div>
+
+                <!-- Giảm giá -->
+                <div>
+                    <label for="discount" class="block text-sm font-bold text-slate-700 mb-1">Giảm giá tay thêm (VNĐ) <%= isEdit ? '[Đã khoá]' : '' %></label>
+                    <input type="number" id="discount" name="discount" <%= isEdit ? 'disabled' : '' %> value="<%= typeof contract !== 'undefined' ? contract.discount : '0' %>"
+                        class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 focus:ring-opacity-50 text-sm py-2 px-3 border <%= isEdit ? 'bg-slate-100' : 'bg-white text-green-700 border-green-300' %>"
+                        placeholder="VD: 500000">
+                    <% if(isEdit) { %>
+                        <input type="hidden" name="discount" value="<%= contract.discount %>">
+                    <% } %>
+                </div>
+
+                <!-- Khu vực Thanh toán quan trọng -->
+                <div class="bg-amber-50 rounded-xl p-5 border border-amber-200 shadow-inner">
+                    <div class="flex items-center gap-2 mb-4 mb-2">
+                        <svg class="h-6 w-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <h4 class="font-bold text-amber-900 border-b border-amber-200 pb-1 w-full text-lg">Thông tin Thu Tiền</h4>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <!-- Trạng thái hoá đơn -->
+                        <div>
+                            <label for="paymentStatus" class="block text-sm font-bold text-amber-800 mb-1">Trạng thái Bill <span class="text-red-500">*</span></label>
+                            <select id="paymentStatus" name="paymentStatus" required class="block w-full rounded-md border-amber-300 shadow-sm focus:border-amber-500 focus:ring focus:ring-amber-500 text-sm py-2 px-3 border bg-white font-black text-amber-900">
+                                <option value="Unpaid" <%= (typeof contract !== 'undefined' && contract.paymentStatus === 'Unpaid') ? 'selected' : '' %>>-- Nợ: Chưa Trả --</option>
+                                <option value="Deposit" <%= (typeof contract !== 'undefined' && contract.paymentStatus === 'Deposit') ? 'selected' : '' %>>Đặt cọc một phần</option>
+                                <option value="Paid" <%= (typeof contract !== 'undefined' && contract.paymentStatus === 'Paid') ? 'selected' : '' %>>🟢 Thu Đủ Tiền (Đã Thanh Toán)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- P.thức Phương tiện -->
+                        <div>
+                            <label for="paymentMethods" class="block text-sm font-medium text-amber-800 mb-1">Phương thức TT</label>
+                            <select id="paymentMethods" name="paymentMethods" class="block w-full rounded-md border-amber-300 shadow-sm focus:border-amber-500 focus:ring focus:ring-amber-500 text-sm py-2 px-3 border bg-white text-slate-700">
+                                <option value="Transfer" <%= (typeof contract !== 'undefined' && contract.paymentMethods && contract.paymentMethods.includes('Transfer')) ? 'selected' : '' %>>Chuyển khoản Ngân hàng</option>
+                                <option value="Cash" <%= (typeof contract !== 'undefined' && contract.paymentMethods && contract.paymentMethods.includes('Cash')) ? 'selected' : '' %>>Tiền mặt</option>
+                                <option value="Card" <%= (typeof contract !== 'undefined' && contract.paymentMethods && contract.paymentMethods.includes('Card')) ? 'selected' : '' %>>Quẹt thẻ (POS)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <% if(isEdit) { %>
+                        <div class="mt-4 pt-4 border-t border-amber-200/50 flex justify-between items-center text-sm font-bold text-rose-800">
+                            <span>Thực tế phải thu (Sau VAT):</span>
+                            <span class="text-xl">
+                                <%= contract.totalAmount ? new Intl.NumberFormat('vi-VN').format(contract.totalAmount) : '0' %> VNĐ
+                            </span>
+                        </div>
+                    <% } %>
+                </div>
+
+            </div>
+            
+            <div class="md:col-span-2">
+                <label for="notes" class="block text-sm font-medium text-slate-700 mb-1">Ghi chú Nội bộ Hợp đồng</label>
+                <textarea id="notes" name="notes" rows="2" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-rose-500 focus:ring focus:ring-rose-500 text-sm py-2 px-3 border"><%= typeof contract !== 'undefined' ? contract.notes : '' %></textarea>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-6 border-t border-slate-100">
+            <a href="/admin/contracts/list" class="px-5 py-2 text-sm font-medium rounded-md border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors">Hủy thao tác</a>
+            <button type="submit" class="px-8 py-2 text-sm font-bold rounded-md bg-rose-600 text-white shadow-md hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 transition-transform active:scale-95 flex items-center gap-2">
+                <!-- If Not edit text = Đóng dấu, edit = Cập nhật Bill -->
+                <%= isEdit ? 'Đóng mộc cập nhật hoá đơn' : 'Phát Hành Hoá Đơn' %>
+                <svg class="w-4 h-4 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+        </div>
+    </form>
+</div>
+
+<%- include('../../partials/footer') %>

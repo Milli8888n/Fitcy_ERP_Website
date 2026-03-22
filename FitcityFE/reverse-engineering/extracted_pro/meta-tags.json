@@ -1,0 +1,115 @@
+﻿{
+    "seo":  [
+                {
+                    "content":  "width=device-width, initial-scale=1.0, interactive-widget=resizes-content",
+                    "name":  "viewport",
+                    "source":  "en.html"
+                },
+                {
+                    "content":  "It\u0027s not just fitness. It\u0027s living fully\n",
+                    "name":  "description",
+                    "source":  "en.html"
+                },
+                {
+                    "content":  "",
+                    "name":  "keywords",
+                    "source":  "en.html"
+                },
+                {
+                    "content":  "Phive",
+                    "name":  "author",
+                    "source":  "en.html"
+                }
+            ],
+    "openGraph":  [
+                      {
+                          "content":  "Phive — It\u0027s not just fitness. It\u0027s living fully",
+                          "property":  "og:title",
+                          "source":  "en.html"
+                      },
+                      {
+                          "content":  "It\u0027s not just fitness. It\u0027s living fully\n",
+                          "property":  "og:description",
+                          "source":  "en.html"
+                      },
+                      {
+                          "content":  "https://cdn.sanity.io/images/z6ex5ahr/production/e1b9dc5c0173f0c4c2c47a78994e655394bb2895-1200x630.png",
+                          "property":  "og:image",
+                          "source":  "en.html"
+                      },
+                      {
+                          "content":  "1200",
+                          "property":  "og:image:width",
+                          "source":  "en.html"
+                      },
+                      {
+                          "content":  "600",
+                          "property":  "og:image:height",
+                          "source":  "en.html"
+                      },
+                      {
+                          "content":  "website",
+                          "property":  "og:type",
+                          "source":  "en.html"
+                      },
+                      {
+                          "content":  "Phive",
+                          "property":  "og:site_name",
+                          "source":  "en.html"
+                      },
+                      {
+                          "content":  "https://phive.pt/en",
+                          "property":  "og:url",
+                          "source":  "en.html"
+                      }
+                  ],
+    "twitter":  [
+                    {
+                        "content":  "Phive — It\u0027s not just fitness. It\u0027s living fully",
+                        "name":  "twitter:title",
+                        "source":  "en.html"
+                    },
+                    {
+                        "content":  "It\u0027s not just fitness. It\u0027s living fully\n",
+                        "name":  "twitter:description",
+                        "source":  "en.html"
+                    },
+                    {
+                        "content":  "https://cdn.sanity.io/images/z6ex5ahr/production/e1b9dc5c0173f0c4c2c47a78994e655394bb2895-1200x630.png",
+                        "name":  "twitter:image",
+                        "source":  "en.html"
+                    },
+                    {
+                        "content":  "summary_large_image",
+                        "name":  "twitter:card",
+                        "source":  "en.html"
+                    }
+                ],
+    "other":  [
+                  {
+                      "content":  "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+                      "name":  "robots",
+                      "source":  "en.html"
+                  },
+                  {
+                      "content":  "#ffe000",
+                      "name":  "theme-color",
+                      "source":  "en.html"
+                  },
+                  {
+                      "content":  "6tzSNmZ_-gXirfvLEqUowh_D1fK3p2unvSyejjU1YrA",
+                      "name":  "google-site-verification",
+                      "source":  "en.html"
+                  },
+                  {
+                      "content":  "",
+                      "name":  "facebook-domain-verification",
+                      "source":  "en.html"
+                  },
+                  {
+                      "content":  "telephone=no",
+                      "name":  "format-detection",
+                      "source":  "en.html"
+                  }
+              ]
+}

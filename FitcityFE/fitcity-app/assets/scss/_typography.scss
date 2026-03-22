@@ -1,0 +1,111 @@
+// Typography System
+
+.-uppercase {
+    text-transform: uppercase;
+}
+
+// Title 1 - Used in HomeHeader Ribbon
+// Style: Be Vietnam Pro, Extra Bold
+.-title-1 {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 800;
+    font-size: rs(320);
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+
+    @include max-screen($desktop) {
+        font-size: rs(240);
+    }
+
+    @include max-screen($small) {
+        font-size: rs(120);
+        letter-spacing: -0.01em;
+    }
+}
+
+
+
+
+// Callout - Used in Ribbon Subtitles ("JÁ ABRIU!")
+.-callout {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 700;
+    font-size: rs(32);
+    line-height: 1.1;
+    letter-spacing: 0.05em;
+
+    @include max-screen($small) {
+        font-size: rs(22);
+    }
+}
+
+
+// Footnote 1 - Used in CTA Buttons ("CONHECER CLUBE")
+.-footnote-1 {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 600;
+    font-size: rs(10);
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    @include max-screen($small) {
+        font-size: rs(8);
+    }
+}
+
+// Subhead 2 - Used in PhiveClubs description
+.-subhead-2 {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 300;
+    font-size: rs(32);
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+
+    @include max-screen($small) {
+        font-size: rs(22);
+    }
+}
+
+// Manuscript 2 - Used in Handwritten subtitles (Bold Typography)
+.-manuscript-2 {
+    font-family: 'PureHeart', cursive;
+    font-weight: 400;
+}
+
+// Manuscript 3 - Used in Handwritten subtitles
+.-manuscript-3 {
+    font-family: 'Kolker Brush', cursive;
+    font-weight: 400;
+    font-size: rs(40);
+    line-height: 1.1;
+
+    @include max-screen($small) {
+        font-size: rs(28);
+    }
+}
+
+// Title 4
+.-title-4 {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 700;
+    font-size: rs(48);
+    line-height: 1.1;
+
+    @include max-screen($small) {
+        font-size: rs(32);
+    }
+}
+
+// Footnote 2
+.-footnote-2 {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 500;
+    font-size: rs(12);
+    line-height: 1.1;
+    letter-spacing: 0.05em;
+
+    @include max-screen($small) {
+        font-size: rs(10);
+    }
+}

@@ -1,0 +1,528 @@
+/* PHIVE DESIGN SYSTEM - CSS VARIABLES REFERENCE */
+
+/* ============================================
+   Tài liệu này chứa toàn bộ CSS variables
+   được sử dụng trong website Phive.pt
+   
+   Sử dụng để tham khảo cho dự án FitCity
+   ============================================ */
+
+:root {
+  /* ==================== COLORS ==================== */
+  
+  /* Primary Brand Colors */
+  --color-yellow: #ffe000;
+  --color-warmYellow: #ffd904;
+  --color-subduedYellow: #f6c548;
+  --color-lightYellow: #fff4a6;
+  
+  /* Neutral Colors */
+  --color-black: #000;
+  --color-white: #fff;
+  --color-darkBrown: #161003;
+  --color-midBrown: #211e16;
+  --color-lightBrown: #3c3627;
+  --color-warmGrey: #f3efd7;
+  
+  /* Accent Colors */
+  --color-nutrition: #d9f7bb;    /* Green theme */
+  --color-stream: #b76eff;       /* Purple theme */
+  --color-pilates: #f7bbce;      /* Pink theme */
+  --color-red: #ff004d;
+  
+  
+  /* ==================== TYPOGRAPHY ==================== */
+  
+  /* Font Families */
+  --font-primary: 'PPFormula', sans-serif;
+  --font-secondary: 'AcidGrotesk', sans-serif;
+  --font-accent: 'PureHeart', cursive;
+  
+  /* Font Sizes - Titles (Fluid Typography) */
+  --font-size-title-1: clamp(114px, 46.725px + 100vw * .1725, 340px);
+  --font-size-title-2: clamp(120px, 66.414px + 100vw * .1374, 300px);
+  --font-size-title-3: clamp(80px, 47.24px + 100vw * .084, 190px);
+  --font-size-title-4: clamp(68px, 46.55px + 100vw * .055, 140px);
+  --font-size-title-5: clamp(34px, 29.242px + 100vw * .0122, 50px);
+  --font-size-title-6: clamp(20px, 17.036px + 100vw * .0076, 30px);
+  
+  /* Font Sizes - Manuscript (Decorative) */
+  --font-size-manuscript-1: clamp(40px, 19.174px + 100vw * .0534, 110px);
+  --font-size-manuscript-2: clamp(60px, 24.276px + 100vw * .0916, 180px);
+  --font-size-manuscript-3: clamp(40px, 28.105px + 100vw * .0305, 80px);
+  
+  /* Font Sizes - Body Text */
+  --font-size-headline: clamp(36px, 28.863px + 100vw * .0183, 60px);
+  --font-size-callout: clamp(18px, 17.415px + 100vw * .0015, 20px);
+  --font-size-subhead-1: clamp(30px, 25.242px + 100vw * .0122, 46px);
+  --font-size-subhead-2: clamp(16px, 14.206px + 100vw * .0046, 22px);
+  --font-size-subhead-3: clamp(14px, 12.621px + 100vw * .0035, 18px);
+  --font-size-body-1: clamp(12px, 11.415px + 100vw * .0015, 14px);
+  --font-size-caption-1: clamp(18px, 16.791px + 100vw * .0031, 22px);
+  --font-size-label-1: clamp(10px, 9.415px + 100vw * .0015, 12px);
+  --font-size-label-2: clamp(8px, 7.621px + 100vw * .001, 10px);
+  --font-size-footnote-1: clamp(8px, 7.415px + 100vw * .0015, 10px);
+  --font-size-footnote-2: clamp(6px, 5.621px + 100vw * .001, 8px);
+  
+  /* Line Heights */
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.05em;
+  
+  
+  /* ==================== SPACING ==================== */
+  
+  /* Grid System */
+  --grid-num-cols: 16;
+  --grid-max-width: 106.25rem;  /* 1700px */
+  --grid-padding: clamp(8px, 3.242px + 100vw * .0122, 24px);
+  --grid-gutter: clamp(2px, -.964px + 100vw * .0076, 12px);
+  --grid-inset: calc(var(--grid-padding) + var(--grid-gutter));
+  
+  /* Spacing Scale */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2rem;      /* 32px */
+  --space-2xl: 3rem;     /* 48px */
+  --space-3xl: 4rem;     /* 64px */
+  --space-4xl: 6rem;     /* 96px */
+  --space-5xl: 8rem;     /* 128px */
+  
+  
+  /* ==================== BREAKPOINTS ==================== */
+  
+  --breakpoint-xxsmall: 410px;
+  --breakpoint-xsmall: 743px;
+  --breakpoint-small: 1023px;
+  --breakpoint-medium: 1290px;
+  --breakpoint-large: 1440px;
+  --breakpoint-xlarge: 1700px;
+  --breakpoint-xxlarge: 2000px;
+  
+  
+  /* ==================== BORDERS ==================== */
+  
+  --border-radius-sm: 0.25rem;   /* 4px */
+  --border-radius-md: 0.5rem;    /* 8px */
+  --border-radius-lg: 1rem;      /* 16px */
+  --border-radius-xl: 1.5rem;    /* 24px */
+  --border-radius-full: 9999px;  /* Pill shape */
+  
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-width-thick: 4px;
+  
+  
+  /* ==================== SHADOWS ==================== */
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  
+  /* ==================== TRANSITIONS ==================== */
+  
+  /* Durations */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 750ms;
+  
+  /* Easing Functions */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-custom: cubic-bezier(0.075, 0.82, 0.165, 1);
+  
+  
+  /* ==================== Z-INDEX SCALE ==================== */
+  
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 900;
+  --z-modal: 1000;
+  --z-popover: 1100;
+  --z-tooltip: 1200;
+  --z-curtain: 9999;
+}
+
+
+/* ==================== THEME VARIANTS ==================== */
+
+/* Light Theme (Default) */
+[data-theme="light"] {
+  --theme-bg: var(--color-white);
+  --theme-text: var(--color-darkBrown);
+  --theme-accent: var(--color-yellow);
+  
+  --menu-color: var(--color-darkBrown);
+  --menu-backgroundColor: var(--color-yellow);
+  --menu-secondaryBackgroundColor: var(--color-lightYellow);
+  
+  --roundButton-color: var(--color-yellow);
+  --roundButton-backgroundColor: var(--color-darkBrown);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --theme-bg: var(--color-darkBrown);
+  --theme-text: var(--color-white);
+  --theme-accent: var(--color-yellow);
+  
+  --menu-color: var(--color-yellow);
+  --menu-backgroundColor: var(--color-darkBrown);
+  --menu-secondaryBackgroundColor: var(--color-lightBrown);
+  
+  --roundButton-color: var(--color-darkBrown);
+  --roundButton-backgroundColor: var(--color-yellow);
+}
+
+/* Stream Theme (Purple) */
+[data-theme="stream"] {
+  --theme-bg: var(--color-darkBrown);
+  --theme-text: var(--color-white);
+  --theme-accent: var(--color-stream);
+  
+  --menu-color: var(--color-stream);
+  --menu-backgroundColor: var(--color-darkBrown);
+  
+  --roundButton-color: var(--color-stream);
+  --roundButton-backgroundColor: var(--color-darkBrown);
+}
+
+/* Pilates Theme (Pink) */
+[data-theme="pilates"] {
+  --theme-bg: var(--color-white);
+  --theme-text: var(--color-darkBrown);
+  --theme-accent: var(--color-pilates);
+  
+  --menu-color: var(--color-darkBrown);
+  --menu-backgroundColor: var(--color-pilates);
+  
+  --roundButton-color: var(--color-pilates);
+  --roundButton-backgroundColor: var(--color-darkBrown);
+}
+
+/* Nutrition Theme (Green) */
+[data-theme="nutrition"] {
+  --theme-bg: var(--color-white);
+  --theme-text: var(--color-darkBrown);
+  --theme-accent: var(--color-nutrition);
+  
+  --menu-color: var(--color-darkBrown);
+  --menu-backgroundColor: var(--color-nutrition);
+  
+  --roundButton-color: var(--color-nutrition);
+  --roundButton-backgroundColor: var(--color-darkBrown);
+}
+
+
+/* ==================== UTILITY CLASSES ==================== */
+
+/* Typography Utilities */
+.-title-1 { 
+  font-family: var(--font-primary);
+  font-size: var(--font-size-title-1);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.-title-2 { 
+  font-family: var(--font-primary);
+  font-size: var(--font-size-title-2);
+  line-height: var(--line-height-tight);
+}
+
+.-title-3 { 
+  font-family: var(--font-primary);
+  font-size: var(--font-size-title-3);
+  line-height: var(--line-height-tight);
+}
+
+.-title-4 { 
+  font-family: var(--font-primary);
+  font-size: var(--font-size-title-4);
+  line-height: var(--line-height-tight);
+}
+
+.-title-5 { 
+  font-family: var(--font-primary);
+  font-size: var(--font-size-title-5);
+  line-height: var(--line-height-tight);
+}
+
+.-title-6 { 
+  font-family: var(--font-primary);
+  font-size: var(--font-size-title-6);
+  line-height: var(--line-height-normal);
+}
+
+.-manuscript-1 { 
+  font-family: var(--font-accent);
+  font-size: var(--font-size-manuscript-1);
+}
+
+.-manuscript-2 { 
+  font-family: var(--font-accent);
+  font-size: var(--font-size-manuscript-2);
+}
+
+.-manuscript-3 { 
+  font-family: var(--font-accent);
+  font-size: var(--font-size-manuscript-3);
+}
+
+.-headline { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-headline);
+  font-weight: 700;
+}
+
+.-callout { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-callout);
+  font-weight: 500;
+}
+
+.-subhead-1 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-subhead-1);
+  font-weight: 400;
+}
+
+.-subhead-2 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-subhead-2);
+  font-weight: 400;
+}
+
+.-subhead-3 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-subhead-3);
+  font-weight: 400;
+}
+
+.-body-1 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-body-1);
+  font-weight: 400;
+}
+
+.-caption-1 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-caption-1);
+  font-weight: 400;
+}
+
+.-label-1 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-label-1);
+  font-weight: 500;
+}
+
+.-label-2 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-label-2);
+  font-weight: 500;
+}
+
+.-footnote-1 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-footnote-1);
+  font-weight: 400;
+}
+
+.-footnote-2 { 
+  font-family: var(--font-secondary);
+  font-size: var(--font-size-footnote-2);
+  font-weight: 400;
+}
+
+/* Text Transform */
+.-uppercase { text-transform: uppercase; }
+.-lowercase { text-transform: lowercase; }
+.-capitalize { text-transform: capitalize; }
+
+/* Text Alignment */
+.-text-left { text-align: left; }
+.-text-center { text-align: center; }
+.-text-right { text-align: right; }
+
+
+/* ==================== GRID SYSTEM ==================== */
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-num-cols), 1fr);
+  gap: var(--grid-gutter);
+  padding-left: var(--grid-padding);
+  padding-right: var(--grid-padding);
+  max-width: var(--grid-max-width);
+  margin: 0 auto;
+}
+
+/* Column Classes */
+.col { grid-column: span 1; }
+
+/* XXLarge (2000px+) */
+.xxlarge-1 { grid-column: span 1; }
+.xxlarge-2 { grid-column: span 2; }
+.xxlarge-3 { grid-column: span 3; }
+.xxlarge-4 { grid-column: span 4; }
+.xxlarge-5 { grid-column: span 5; }
+.xxlarge-6 { grid-column: span 6; }
+.xxlarge-7 { grid-column: span 7; }
+.xxlarge-8 { grid-column: span 8; }
+.xxlarge-9 { grid-column: span 9; }
+.xxlarge-10 { grid-column: span 10; }
+.xxlarge-11 { grid-column: span 11; }
+.xxlarge-12 { grid-column: span 12; }
+.xxlarge-13 { grid-column: span 13; }
+.xxlarge-14 { grid-column: span 14; }
+.xxlarge-15 { grid-column: span 15; }
+.xxlarge-16 { grid-column: span 16; }
+
+/* Offset Classes */
+.xxlarge-offset-1 { grid-column-start: 2; }
+.xxlarge-offset-2 { grid-column-start: 3; }
+.xxlarge-offset-3 { grid-column-start: 4; }
+/* ... continue for all offsets ... */
+
+/* Responsive Breakpoints */
+@media (max-width: 1699px) {
+  .xlarge-1 { grid-column: span 1; }
+  .xlarge-2 { grid-column: span 2; }
+  /* ... continue for all columns ... */
+  .xlarge-16 { grid-column: span 16; }
+}
+
+@media (max-width: 1439px) {
+  .large-1 { grid-column: span 1; }
+  /* ... continue ... */
+  .large-16 { grid-column: span 16; }
+}
+
+@media (max-width: 1289px) {
+  .medium-1 { grid-column: span 1; }
+  /* ... continue ... */
+  .medium-16 { grid-column: span 16; }
+}
+
+@media (max-width: 1022px) {
+  .small-1 { grid-column: span 1; }
+  /* ... continue ... */
+  .small-16 { grid-column: span 16; }
+}
+
+@media (max-width: 742px) {
+  .xsmall-1 { grid-column: span 1; }
+  /* ... continue ... */
+  .xsmall-16 { grid-column: span 16; }
+}
+
+@media (max-width: 409px) {
+  .xxsmall-1 { grid-column: span 1; }
+  /* ... continue ... */
+  .xxsmall-16 { grid-column: span 16; }
+}
+
+/* Alignment Utilities */
+.align-start { align-items: start; }
+.align-center { align-items: center; }
+.align-end { align-items: end; }
+.align-middle { align-items: center; }
+
+.justify-start { justify-content: start; }
+.justify-center { justify-content: center; }
+.justify-end { justify-content: end; }
+.justify-between { justify-content: space-between; }
+
+
+/* ==================== USAGE EXAMPLES ==================== */
+
+/*
+Example 1: Responsive Grid Layout
+----------------------------------
+<div class="row">
+  <div class="xxlarge-6 small-8 xsmall-14 col">
+    <!-- 6/16 on desktop, 8/16 on tablet, 14/16 on mobile -->
+  </div>
+</div>
+
+
+Example 2: Typography
+---------------------
+<h1 class="-title-1 -uppercase">Phive</h1>
+<p class="-subhead-2">Subtitle text</p>
+
+
+Example 3: Theme Switching
+---------------------------
+<section data-theme="dark">
+  <!-- Content uses dark theme variables -->
+</section>
+
+
+Example 4: Custom Button
+-------------------------
+<button style="
+  background: var(--color-yellow);
+  color: var(--color-darkBrown);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius-full);
+  transition: transform var(--duration-normal) var(--ease-out);
+">
+  Click me
+</button>
+
+
+Example 5: Fluid Typography
+----------------------------
+.custom-heading {
+  font-size: clamp(24px, 20px + 100vw * 0.01, 48px);
+  /* Min: 24px, Preferred: 20px + 1vw, Max: 48px */
+}
+*/
+
+
+/* ==================== NOTES ==================== */
+
+/*
+IMPORTANT LEARNINGS:
+
+1. Fluid Typography:
+   - Use clamp() for responsive font sizes
+   - Formula: clamp(MIN, PREFERRED, MAX)
+   - PREFERRED uses viewport width for scaling
+
+2. CSS Variables:
+   - Use semantic naming (--color-yellow vs --primary)
+   - Theme variants with data attributes
+   - Easy to override per component
+
+3. Grid System:
+   - 16 columns (more flexible than 12)
+   - Mobile-first responsive classes
+   - Offset classes for positioning
+
+4. Performance:
+   - Use CSS variables for dynamic theming
+   - Avoid JavaScript for style changes
+   - Hardware-accelerated properties (transform, opacity)
+
+5. Accessibility:
+   - Maintain color contrast ratios
+   - Use rem/em for scalable text
+   - Provide focus indicators
+*/

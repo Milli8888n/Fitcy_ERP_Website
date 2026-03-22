@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-02-05T15:37:24.546Z",
+  "components": {
+    "three-scene": {
+      "found": false,
+      "instances": 0
+    },
+    "button-variable": {
+      "found": false,
+      "instances": 0
+    },
+    "input": {
+      "found": false,
+      "instances": 0
+    },
+    "input-wrapper": {
+      "found": false,
+      "instances": 0
+    },
+    "legal-notice": {
+      "found": false,
+      "instances": 0
+    },
+    "form-modal": {
+      "found": false,
+      "instances": 0
+    },
+    "class-modal": {
+      "found": false,
+      "instances": 0
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50">
+    <nav class="bg-dark-card/90 backdrop-blur-lg border border-white/10 rounded-full py-3 px-6 shadow-2xl flex justify-between items-center bg-[#1e1e1e]/90">
+        <a class="flex flex-col items-center gap-1 group" href="/pt">
+            <span class="material-symbols-outlined <%= activePage === 'dashboard' ? 'text-primary fill-1' : 'text-slate-500 group-hover:text-primary transition-colors' %>">calendar_month</span>
+            <span class="text-[10px] font-bold <%= activePage === 'dashboard' ? 'text-primary' : 'text-slate-500' %> uppercase">Lịch dạy</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 group" href="/pt/metrics">
+            <span class="material-symbols-outlined <%= activePage === 'metrics' ? 'text-primary fill-1' : 'text-slate-500 group-hover:text-primary transition-colors' %>">monitoring</span>
+            <span class="text-[10px] font-bold <%= activePage === 'metrics' ? 'text-primary' : 'text-slate-500' %> uppercase">Chỉ số</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 group" href="/pt/meal-plans">
+            <span class="material-symbols-outlined <%= activePage === 'meal-plans' ? 'text-primary fill-1' : 'text-slate-500 group-hover:text-primary transition-colors' %>">restaurant</span>
+            <span class="text-[10px] font-bold <%= activePage === 'meal-plans' ? 'text-primary' : 'text-slate-500' %> uppercase">Dinh dưỡng</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 group" href="/auth/logout" onclick="return confirm('Bạn muốn đăng xuất?');">
+            <span class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors">logout</span>
+            <span class="text-[10px] font-bold text-slate-500 uppercase">Thoát</span>
+        </a>
+    </nav>
+</div>

@@ -1,0 +1,126 @@
+<%- include('../../partials/header', { title: 'Quản lý Chi phí', activePage: 'expenses' }) %>
+
+<div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+        <h2 class="text-2xl font-bold text-slate-800">Sổ chi nội bộ</h2>
+        <p class="text-slate-500 text-sm mt-1">Quản lý và ghi nhận các khoản chi phí vận hành chi nhánh.</p>
+    </div>
+    <button onclick="document.getElementById('expenseModal').classList.remove('hidden')" class="inline-flex items-center justify-center px-4 py-2 bg-lime-500 hover:bg-lime-600 text-slate-900 font-semibold rounded-lg transition-colors shadow-sm">
+        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>
+        Thêm khoản chi
+    </button>
+</div>
+
+<!-- DATA TABLE -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-50 text-slate-500 text-sm uppercase tracking-wider border-b border-slate-200">
+                    <th class="p-4 font-semibold">Ngày</th>
+                    <th class="p-4 font-semibold">Chi nhánh</th>
+                    <th class="p-4 font-semibold">Loại chi phí</th>
+                    <th class="p-4 font-semibold">Mô tả</th>
+                    <th class="p-4 font-semibold text-right">Số tiền</th>
+                    <th class="p-4 font-semibold">Người ghi</th>
+                    <th class="p-4 font-semibold text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                <% expenses.forEach(exp => { %>
+                    <tr class="hover:bg-slate-50/70 transition-colors">
+                        <td class="p-4 text-sm text-slate-600">
+                            <%= new Date(exp.date).toLocaleDateString('vi-VN') %>
+                        </td>
+                        <td class="p-4">
+                            <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-700">
+                                <%= exp.branch ? exp.branch.name : 'N/A' %>
+                            </span>
+                        </td>
+                        <td class="p-4 text-sm font-semibold text-slate-700"><%= exp.category %></td>
+                        <td class="p-4 text-sm text-slate-500 max-w-xs truncate"><%= exp.description || '-' %></td>
+                        <td class="p-4 text-sm font-bold text-rose-600 text-right">
+                            -<%= new Intl.NumberFormat('vi-VN').format(exp.amount) %> đ
+                        </td>
+                        <td class="p-4 text-sm text-slate-500">
+                            <%= exp.recordedBy ? exp.recordedBy.name : 'Hệ thống' %>
+                        </td>
+                        <td class="p-4 text-center">
+                            <form action="/admin/expenses/delete/<%= exp._id %>" method="POST" onsubmit="return confirm('Xóa khoản chi này?')" class="inline-block">
+                                <button class="text-slate-400 hover:text-red-600 transition-colors">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+                <% if (!expenses || expenses.length === 0) { %>
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-slate-500">Chưa có khoản chi nào được ghi nhận.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Form -->
+<div id="expenseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+        <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center">
+            <h3 class="text-xl font-bold text-slate-800">Ghi nhận chi phí mới</h3>
+            <button onclick="document.getElementById('expenseModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 transition-colors text-2xl leading-none">&times;</button>
+        </div>
+        <form action="/admin/expenses/store" method="POST" class="px-8 py-8 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Chi nhánh</label>
+                    <select name="branchId" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white">
+                        <% branches.forEach(b => { %>
+                            <option value="<%= b._id %>"><%= b.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Ngày chi</label>
+                    <input type="date" name="date" required value="<%= new Date().toISOString().split('T')[0] %>" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white">
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Loại chi phí</label>
+                <select name="category" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white">
+                    <option value="Rent">Tiền thuê mặt bằng</option>
+                    <option value="Electricity">Tiền điện</option>
+                    <option value="Water">Tiền nước</option>
+                    <option value="Equipment">Thiết bị Gym</option>
+                    <option value="Marketing">Marketing/Ads</option>
+                    <option value="Supplies">Vật phẩm sửa chữa</option>
+                    <option value="Other">Khác...</option>
+                </select>
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Số tiền (VNĐ)</label>
+                <input type="number" name="amount" placeholder="VD: 5000000" required class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white font-bold">
+            </div>
+
+            <div class="space-y-1">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Ghi chú chi tiết</label>
+                <textarea name="description" rows="3" class="block w-full rounded-md border-slate-300 shadow-sm focus:border-lime-500 focus:ring focus:ring-lime-500 text-sm py-2 px-3 border bg-white"></textarea>
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="px-5 py-2 text-sm font-medium rounded-md bg-lime-500 text-slate-900 border border-transparent shadow hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-500 transition-colors w-full">
+                    Xác nhận ghi chi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../../partials/footer') %>
